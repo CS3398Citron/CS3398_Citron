@@ -17,15 +17,40 @@ function initMap() {
 	});
 
 	//Add a marker to the map when called
-	function addMarker(event, tag) {
+	function addMarker(event, post) {
+		
+		if(post === []) {
+			alert("Null post");
+			return;
+		}
+		
 		//Marker
 		var marker = new google.maps.Marker({
 			position: event.latLng,
 			map: map,
-			title: tag
+			title: 'Hover Title'
 		});
+		
+		//replace newline char with space
+		post = post.replace(/\n/g, " ");
+		
+		var tags = [];
+		var newTags = post.split('#');
+		
+		for(var i = 1; i < newTags.length; i++) {
+			tags.push(newTags[i].split(" ")[0]+" ");
+		}
+		
+		if(tags.length === 0) {
+			tags = "None";
+		}
+		
 		//InfoWindow
-		var contentString = '<p>'+tag+'</p>';
+		var contentString = 
+		'<h1>Header of Tag</h1>'+
+		'<p>Location: '+event.latLng+'</p>'+
+		'<post>'+post+'</post><br>'+
+		'<strong><tag>Tags: '+tags+'</tag></strong>';
 		var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
@@ -44,9 +69,22 @@ function initMap() {
         });
 	}
 	
+	posts = [];
+	postNum = 1;
 	//Calls addMarker when map is clicked
 	google.maps.event.addListener(map, 'click', function(event) {
-		addMarker(event, "Tag1");
+		//calls document for every post instead of only storing the first time
+		//if(posts.length === 0){
+			$.get("/static/Social Media Posts/Austin Twitter Mentions.csv", function(data){ 
+				//$("meta.data").append(data);
+				//alert(document.getElementById("data").innerHTML);
+				//posts = document.getElementById("data").content.split("\","); 
+				posts = data.split("\","); 
+				addMarker(event, posts[postNum]);
+				postNum+= 2;
+			});
+		//}
+
 	});
 	
 	// Sets the map on all InfoMarkers in the array.
@@ -57,7 +95,7 @@ function initMap() {
 	}
 	
 	// Removes the markers from the map, but keeps them in the array.
-	document.getElementById('clearMarkers').onclick = function clearMarkers() {
+	document.getElementById('hideMarkers').onclick = function hideMarkers() {
 	  setMapOnAll(null, Markers);
 	}
 
@@ -75,24 +113,25 @@ function initMap() {
 	
 	document.getElementById('searchTag').onclick = function searchTag() {
 	  var tag = document.getElementById('textarea').value;
-	  //infoWindow and Markers are unrelated and therefore cannot be associated together as one object, solution requires database calls and results through a query
-	  // var tagged = [];
-	  // for (var i = 0; i < markers.length; i++) {
-		  // setMapOnAll(null, markers);
-	  // }
-	  // for (var i = 0; i < markers.length; i++) {
-		  // markers[i].infoWindow.getContent();
-		  // alert(markers[i].getContent());
+	  // infoWindow and Markers are unrelated and therefore cannot be associated together as one object, solution requires database calls and results through a query
+	  var tagged = [];
+	  var checkTag;
+	  for (var i = 0; i < Markers.length; i++) {
+		  setMapOnAll(null, Markers);
+	  }
+	  for (var i = 0; i < InfoWindows.length; i++) {
+		  //get tag from InfoWindow
+		  checkTag = InfoWindows[i].content.split("<tag>Tag: ")[1].split("</tag>")[0]+" ";
 		  
-		// if(markers[i].content == tag)
-		// {
-			// tagged.push(markers[i]);
-			// alert(i);
-		// }
-	  // }
-	  // for (var i = 0; i < tagged.length; i++) {
-		  // setMapOnAll(map, tagged);
-	  // }
+		if(checkTag === tag) {
+			tagged.push(Markers[i]);
+		}
+	  }
+
+	  for (var i = 0; i < tagged.length; i++) {
+		  setMapOnAll(map, tagged);
+	  }
+
 	}
 	document.getElementById('highlight').onclick = function highlight(){
 		var CityHightlight;
