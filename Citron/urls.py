@@ -21,5 +21,5 @@ from sentiments.views import postsJsonObject
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^$', HomePageView.as_view(), name='home'),
-	url(r'^postsJsonObject/', postsJsonObject)
+	url(r'^admin/postsJsonObject/', postsJsonObject)
 ]
