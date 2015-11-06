@@ -13,6 +13,6 @@ def postsJsonObject(request):
 	if not request.user.is_authenticated():
 		return redirect('/admin/login')
 	else:
-		postsJson = serialize('json', Post.objects.all())
-		postsJson = postsJson.strip("[]")
+		postsJson = serialize('json', Post.objects.all(), fields=('statement'))
+		postsJson = [d[0] for d in postsJson]
 		return HttpResponse(postsJson)

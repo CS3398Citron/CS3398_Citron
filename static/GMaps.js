@@ -1,6 +1,10 @@
-var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743};
+var map, heatmap, cityHighLight, cityCenter = {lat: 30.317, lng: -97.743};
 var Markers = [];
 var InfoWindows = [];
+var posts = [];
+var postNum = 1;
+var postsDone = false;
+
 
 //Initialize the map
 function initMap() {
@@ -13,6 +17,7 @@ function initMap() {
 	//Generate Heatmap from getPoints()
 	heatmap = new google.maps.visualization.HeatmapLayer({
 		data: getPoints(),
+		radius: 3,
 		map: map
 	});
 
@@ -69,20 +74,24 @@ function initMap() {
         });
 	}
 	
-	posts = [];
-	postNum = 1;
+	
 	
 	//Calls addMarker when map is clicked
 	google.maps.event.addListener(map, 'click', function(event) {
 		//Call static file to generate random 
-		$.ajax({
-			url:"/static/Social Media Posts/Austin Twitter Mentions.csv",
-			context: document.body 
-		}).done(function(data) {
-			posts = data.split("\",");
-			addMarker(event, posts[postNum].substr(1,posts[postNum].length));
+		if(postNum === 1) {
+			$.ajax({
+				url:"/admin/postsJsonObject/",
+				context: document.body 
+			}).done(function(data) {
+				posts = data.split('{"fields": {"statement": "');
+			});
+			postsDone = true;
+		}
+		else if(postsDone === true) {
+			addMarker(event, posts[postNum]);
 			postNum+= 2;
-		});
+		}
 	});
 	
 	// Sets the map on all InfoMarkers in the array.
@@ -132,7 +141,6 @@ function initMap() {
 
 	}
 	document.getElementById('highlight').onclick = function highlight(){
-		var CityHightlight;
 		var paths = [];
 
 		//Parse HTML into Google Maps LatLng Objects
@@ -166,9 +174,11 @@ function getPoints() {
 	
 	var heatPoints = [];
 	//Generate random points
-	for(var i = 0; i < 10; i++) {
-		heatPoints.push(new google.maps.LatLng(cityCenter.lat + Math.random() % 0.1, cityCenter.lng + Math.random() % 0.1));
-		heatPoints.push(new google.maps.LatLng(cityCenter.lat - Math.random() % 0.1, cityCenter.lng - Math.random() % 0.1));
+	for(var i = 0; i < 1000; i++) {
+		var randPoint = new google.maps.LatLng(cityCenter.lat + Math.random() % 0.1, cityCenter.lng + Math.random() % 0.1);
+		if(google.maps.geometry.poly.containsLocation(randPoint,CityHightlight)
+			heatPoints.push(randPoint);
+		//heatPoints.push(new google.maps.LatLng(cityCenter.lat - Math.random() % 0.1, cityCenter.lng - Math.random() % 0.1));
 	}
 	
 	return heatPoints;
