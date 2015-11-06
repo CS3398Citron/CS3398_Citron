@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from Citron.views import HomePageView
+from sentiments.views import postsJsonObject
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^$', HomePageView.as_view(), name='home'),
+	url(r'^postsJsonObject/', postsJsonObject)
 ]

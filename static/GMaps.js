@@ -166,8 +166,7 @@ function getPoints() {
 	
 	var heatPoints = [];
 	//Generate random points
-	for(var i = 0; i < 10; i++)
-	{
+	for(var i = 0; i < 10; i++) {
 		heatPoints.push(new google.maps.LatLng(cityCenter.lat + Math.random() % 0.1, cityCenter.lng + Math.random() % 0.1));
 		heatPoints.push(new google.maps.LatLng(cityCenter.lat - Math.random() % 0.1, cityCenter.lng - Math.random() % 0.1));
 	}
