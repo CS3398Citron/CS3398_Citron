@@ -71,20 +71,18 @@ function initMap() {
 	
 	posts = [];
 	postNum = 1;
+	
 	//Calls addMarker when map is clicked
 	google.maps.event.addListener(map, 'click', function(event) {
-		//calls document for every post instead of only storing the first time
-		//if(posts.length === 0){
-			$.get("/static/Social Media Posts/Austin Twitter Mentions.csv", function(data){ 
-				//$("meta.data").append(data);
-				//alert(document.getElementById("data").innerHTML);
-				//posts = document.getElementById("data").content.split("\","); 
-				posts = data.split("\","); 
-				addMarker(event, posts[postNum]);
-				postNum+= 2;
-			});
-		//}
-
+		//Call static file to generate random 
+		$.ajax({
+			url:"/static/Social Media Posts/Austin Twitter Mentions.csv",
+			context: document.body 
+		}).done(function(data) {
+			posts = data.split("\",");
+			addMarker(event, posts[postNum].substr(1,posts[postNum].length));
+			postNum+= 2;
+		});
 	});
 	
 	// Sets the map on all InfoMarkers in the array.
@@ -136,12 +134,14 @@ function initMap() {
 	document.getElementById('highlight').onclick = function highlight(){
 		var CityHightlight;
 		var paths = [];
-		
+
 		//Parse HTML into Google Maps LatLng Objects
-		$.get("/static/AustinPolygon.html", function(data) {
+		$.ajax({
+			url:"/static/AustinPolygon.html",
+			context: document.body 
+			}).done(function(data) {
 			data = data.split(" ");
-			for(var i = 0; i < data.length; i++)
-			{
+			for(var i = 0; i < data.length; i++) {
 				var x = data[i].split(",");
 				paths.push(new google.maps.LatLng(x[1],x[0]));
 			}
