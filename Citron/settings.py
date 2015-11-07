@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Citron',
+    'import_export',
+    'sentiments',
 )
 
 MIDDLEWARE_CLASSES = (
