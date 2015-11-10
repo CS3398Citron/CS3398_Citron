@@ -1,23 +1,23 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		
 		{% load staticfiles %}
-
-		<script type="text/javascript" src="{% static "Aggregated_Map.js" %}"></script>
+        <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
 		<link href="{% static "Aggregated_Map.css" %}" rel="stylesheet" type="text/css" media="screen" />
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static "Aggregated_Map.js" %}"></script>
 		<title>Aggregated Map Citron</title>
 	</head>
 	<body>
-		<h1>City of Austin Sentiment Analysis Development</h1>
 		<div id="wrapper">
 			<div id="header-wrapper">
-				<div id="header" class="container">
+				<div id="header">
+                    <h1>Aggregated Map of Austin</h1>
 					<meta class="data" id="data"></meta>
 				</div>
-				<div id="banner">
+				<div id="center">
 					<div id="map-buttons">
 						<input id="hideMarkers" class="btn" onclick="hideMarkers();" type=button value="Hide Markers">
 						<input id="showMarkers" class="btn" onclick="showMarkers();" type=button value="Show All Markers">
@@ -33,7 +33,10 @@
 					</div>
 				</div>
 			</div>
-		</div>
+            <div id="footer-wrapper">
+                <footer id="footer"><p></p></footer>
+            </div>
+        </div>
 	</body>
 	<noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
 </html>
