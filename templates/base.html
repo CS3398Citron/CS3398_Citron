@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <!-- Template by quackit.com -->
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Citron</title>
-    
-    {% load staticfiles %}
-    <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Citron</title>
+        
+        {% load staticfiles %}
+        <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
+    </head>
 
-<body>
-	<header id="header"><h1><center>City of Austin Capital Planning</center></h1></header>
-	<div id="container">
-		<main id="center" class="column">
-			<h3><center>Map of Austin</center></h3>
-			<ul><p><a href ="/Aggregated_Map/"> <center><img src="http://www.inflexwetrust.com/wp-content/uploads/2013/11/IFWT_google-maps-logo.png" height="250" width="250"></center> </a></p></ul>
-			<h3>Database</h3>
-			<ul><p><a href="/Sentiment_Data/">Sentiment Data</a></p></ul>
-		</main>
-
-		<nav id="left" class="column">
-		<article>
-				<h1>Team Citron:</h1>
-				<p>In the center of this page are two links, one takes you to the map of the city of Austin with a heat map for user sentiment data, and the other takes you to the data page.</p>
-		</article>
-		</nav>
-
-		<div id="right" class="column">
-			<h1><u>About</u>:</h1>
-			<p>Project for Dr. Lehr's Fall 2015 Software Engineering. Goal is to create a web application that shows user sentiment for City of Austin.</p>
-		</div>
-
-	</div>
-
-	<div id="footer-wrapper">
-		<footer id="footer"><p></p></footer>
-	</div>
-
-</body>
-
+    <body>
+        <header id="header">
+            <h1>City of Austin Capital Planning</h1>
+        </header>
+        <div id="container">
+            <main id="center" class="column">
+                <center>
+                    <table>
+                        <td>
+                            <h3>Map of Austin</h3>
+                            <a href ="/Aggregated_Map/"><img id="map" src="http://www.inflexwetrust.com/wp-content/uploads/2013/11/IFWT_google-maps-logo.png"></a>
+                        </td>
+                        <td id="spacer" height="200" width="200"></td>
+                        <td>
+                            <h3>Database</h3>
+                            <a href="/Sentiment_Data/"><img id="db" src="https://tinyurl.com/p23duqm"></a>
+                        </td>
+                    </center>
+                </table>
+            </main>
+            <nav id="left" class="column">
+                <article>
+                        <h1>Team Citron:</h1>
+                        <p>In the center of this page are two links, one takes you to the map of the city of Austin with a heat map for user sentiment data, and the other takes you to the data page.</p>
+                </article>
+            </nav>
+            <nav id="right" class="column">
+                <article>
+                    <h1>About:</h1>
+                    <p>Project for Dr. Lehr's Fall 2015 Software Engineering. Goal is to create a web application that shows user sentiment for City of Austin.</p>
+                </article>
+            </nav>
+        </div>
+        <div id="footer-wrapper">
+            <footer id="footer"></footer>
+        </div>
+    </body>
 </html>

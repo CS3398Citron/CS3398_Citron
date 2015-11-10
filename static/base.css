@@ -16,6 +16,7 @@ body {
 
 #center {
     padding: 10px 20px;
+    vertical-align: middle;
     width: 100%;
 }
 
@@ -79,8 +80,9 @@ p {
 
 #header, #footer {
     font-size: large;
-    padding: 0.3em;
+    padding: 1em;
     background: #9fa91f;
+    text-align:center;
 }
 
 #left {
@@ -97,4 +99,18 @@ p {
 
 #container .column {
     padding-top: 1em;
+}
+
+table {
+    text-align:center;
+    border-color:#fff;
+}
+
+img {
+    height:200px;
+    width:200px;
+}
+
+#db {
+    border-radius: 25px;
 }
