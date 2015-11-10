@@ -7,6 +7,7 @@
         
         {% load staticfiles %}
         <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     </head>
 
     <body>
@@ -30,6 +31,11 @@
                 </table>
             </main>
             <nav id="left" class="column">
+                <div id="icons">
+                    <a href ="/"><i class="fa fa-home fa-2x"></i></i></a>
+                    <a href ="/Aggregated_Map/"><i class="fa fa-map-marker fa-2x"></i></a>
+                    <a href ="/Sentiment_Data/"><i class="fa fa-database fa-2x"></i></i></a>
+                </div>
                 <article>
                         <h1>Team Citron:</h1>
                         <p>In the center of this page are two links, one takes you to the map of the city of Austin with a heat map for user sentiment data, and the other takes you to the data page.</p>
@@ -43,7 +49,12 @@
             </nav>
         </div>
         <div id="footer-wrapper">
-            <footer id="footer"></footer>
+            <footer id="footer">
+                <div id="icons">
+                    <a href ="https://twitter.com/austintexasgov"><i class="fa fa-twitter-square fa-2x"></i></a>
+                    <a href ="https://www.facebook.com/places/Things-to-do-in-Austin-Texas/106224666074625/"><i class="fa fa-facebook-square fa-2x"></i></a>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

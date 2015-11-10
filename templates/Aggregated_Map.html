@@ -5,40 +5,47 @@
 		{% load staticfiles %}
         <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
 		<link href="{% static "Aggregated_Map.css" %}" rel="stylesheet" type="text/css" media="screen" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="{% static 'Aggregated_Map.js' %}" type="text/javascript" ></script>
+        <script src="{% static 'Aggregated_Map.js' %}" type="text/javascript"></script>
 		<title>Aggregated Map Citron</title>
 	</head>
 	<body>
-		<div id="wrapper">
-            <header id="header">
-                <h1>Aggregated Map of Austin</h1>
-                <meta class="data" id="data"></meta>
-            </header>
-            <div id="container">
-                <main id="center" class="column">
-                    <form id="map-buttons">
-                        <input id="hideMarkers" class="btn" onclick="hideMarkers();" type=button value="Hide Markers">
-                        <input id="showMarkers" class="btn" onclick="showMarkers();" type=button value="Show All Markers">
-                        <input id="deleteMarkers" class="btn" onclick="deleteMarkers();" type=button value="Delete Markers">
-                        <input id="highlight" class="btn" onclick="highlight();" type=button value="Highlight Austin">
+        <header id="header">
+            <h1>Aggregated Map of Austin</h1>
+        </header>
+        <div id="container">
+            <main id="center" class="column">
+                <form id="map-buttons">
+                    <input id="hideMarkers" class="btn" onclick="hideMarkers();" type=button value="Hide Markers">
+                    <input id="showMarkers" class="btn" onclick="showMarkers();" type=button value="Show All Markers">
+                    <input id="deleteMarkers" class="btn" onclick="deleteMarkers();" type=button value="Delete Markers">
+                    <input id="highlight" class="btn" onclick="highlight();" type=button value="Highlight Austin">
+                </form>
+                <div id="map"></div>
+                <div id="tags">
+                    <form id="search">
+                        <input id="searchTag" class="btn" onclick="searchTag();" type=button value="Search for Tag">
+                        <input id="textarea" type="text" placeholder="Enter a tag" name="tag">
                     </form>
-                    <div id="map"></div>
-                    <div id="tags">
-                        <form id="search">
-                            <input id="searchTag" class="btn" onclick="searchTag();" type=button value="Search for Tag">
-                            <input id="textarea" type="text" placeholder="Enter a tag" name="tag">
-                        </form>
-                    </div>
-                </main>
-                <nav id="left" class="column"></nav>
-                <nav id="right" class="column"></nav>
-            </div>
-            <div id="footer-wrapper">
-                <footer id="footer"></footer>
-            </div>
+                </div>
+            </main>
+            <nav id="left" class="column">
+                <div id="icons">
+                    <a href ="/"><i class="fa fa-home fa-2x"></i></i></a>
+                    <a href ="/Aggregated_Map/"><i class="fa fa-map-marker fa-2x"></i></a>
+                    <a href ="/Sentiment_Data/"><i class="fa fa-database fa-2x"></i></i></a>
+                </div>
+            </nav>
+            <nav id="right" class="column"></nav>
         </div>
+        <footer id="footer">
+            <div id="icons">
+                    <a href ="https://twitter.com/austintexasgov"><i class="fa fa-twitter-square fa-2x"></i></a>
+                    <a href ="https://www.facebook.com/places/Things-to-do-in-Austin-Texas/106224666074625/"><i class="fa fa-facebook-square fa-2x"></i></a>
+                </div>
+        </footer>
 	</body>
 	<noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
 </html>

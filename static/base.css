@@ -87,14 +87,17 @@ p {
 
 #left {
     background: #DAE9BC;
+    min-height:200px;
 }
 
 #right {
     background: #F7FDEB;
+     min-height:200px;
 }
 
 #center {
     background: #fff;
+     min-height:200px;
 }
 
 #container .column {
@@ -113,4 +116,20 @@ img {
 
 #db {
     border-radius: 25px;
+}
+
+#icons i{
+    color: #9fa91f;
+}
+
+#icons i:hover{
+    color: black;
+}
+
+#footer #icons i{
+    color:black;
+}
+
+#footer #icons i:hover{
+    color: #DAE9B;
 }
