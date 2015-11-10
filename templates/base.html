@@ -1,39 +1,50 @@
+<!DOCTYPE html>
+<!-- Template by quackit.com -->
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		
-		{% load staticfiles %}
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Citron</title>
+    
+    {% load staticfiles %}
+    <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
+</head>
 
-		<script type="text/javascript" src="{% static "GMaps.js" %}"></script>
-		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css" media="screen" />
-		<title>Citron</title>
-	</head>
-	<body>
-		<h1>City of Austin Sentiment Analysis Development</h1>
-		<div id="wrapper">
-			<div id="header-wrapper">
-				<div id="header" class="container">
-					<meta class="data" id="data"></meta>
-				</div>
-				<div id="banner">
-					<div id="map-buttons">
-						<input id="hideMarkers" class="btn" onclick="hideMarkers();" type=button value="Hide Markers">
-						<input id="showMarkers" class="btn" onclick="showMarkers();" type=button value="Show All Markers">
-						<input id="deleteMarkers" class="btn" onclick="deleteMarkers();" type=button value="Delete Markers">
-						<input id="highlight" class="btn" onclick="highlight();" type=button value="Highlight Austin">
-					</div>
-					<div id="map"></div>
-					<div id="tags">
-						<form id="search">
-							<input id="searchTag" class="btn" onclick="searchTag();" type=button value="Search for Tag">
-							<input id="textarea" type="text" placeholder="Enter a tag" name="tag">
-						</form>
-					</div>
-				</div>
-			</div>
+<body>
+
+	<header id="header"><h1><center>City of Austin Capital Planning</center></h1></header>
+
+	<div id="container">
+
+		<main id="center" class="column">
+			<h3><center>Map of Austin</center></h3>
+			<ul>
+			<p><a href ="/Aggregated_Map/"> <center><img src="http://www.inflexwetrust.com/wp-content/uploads/2013/11/IFWT_google-maps-logo.png" height="500" width="500"></center> </a></p>
+			</ul>
+			<h3>Database</h3>
+			<ul>
+			<p><a href="/Sentiment_Data/">Sentiment Data</a></p>
+			</ul>
+		</main>
+
+		<nav id="left" class="column">
+		
+		<article>
+				<h1>Team Citron:</h1>
+				<p>In the center of this page are two links, one takes you to the map of the city of Austin with a heat map for user sentiment data, and the other takes you to the data page.</p>
+		</article>
+		</nav>
+
+		<div id="right" class="column">
+			<h1><u>About</u>:</h1>
+			<p>Project for Dr. Lehr's Fall 2015 Software Engineering. Goal is to create a web application that shows user sentiment for City of Austin.</p>
 		</div>
-	</body>
-	<noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
+
+	</div>
+
+	<div id="footer-wrapper">
+		<footer id="footer"><p>Sentiment Data</p></footer>
+	</div>
+
+</body>
+
 </html>
