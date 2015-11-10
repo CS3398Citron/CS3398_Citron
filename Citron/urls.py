@@ -16,12 +16,20 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from Citron.views import HomePageView
+<<<<<<< HEAD
 from Citron.views import Aggregated_Map
 from Citron.views import Sentiment_Data
+=======
+from sentiments.views import postsJsonObject
+>>>>>>> 3bb92ccd4a810cc9967a5fafff18c2033c8e29d5
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^$', HomePageView.as_view(), name='home'),
+<<<<<<< HEAD
 	url('Aggregated_Map', Aggregated_Map.as_view(), name='map'),
 	url('Sentiment_Data', Sentiment_Data.as_view(), name='sentiment'),
+=======
+	url(r'^admin/postsJsonObject/', postsJsonObject)
+>>>>>>> 3bb92ccd4a810cc9967a5fafff18c2033c8e29d5
 ]
