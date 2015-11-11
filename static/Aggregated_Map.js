@@ -76,7 +76,7 @@ function initMap() {
 	google.maps.event.addListener(map, 'click', function(event) {
 		//Call static file to generate random 
 		$.ajax({
-			url:"/static/Social Media Posts/Austin Twitter Mentions.csv",
+			url:"/admin/postsJsonObject/",
 			context: document.body 
 		}).done(function(data) {
 			posts = data.split("\",");

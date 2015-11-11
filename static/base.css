@@ -122,14 +122,10 @@ img {
     color: #9fa91f;
 }
 
-#icons i:hover{
+#icons i:hover, #footer #icons i:hover{
     color: black;
 }
 
 #footer #icons i{
-    color:black;
-}
-
-#footer #icons i:hover{
-    color: #DAE9B;
+    color:#F7FDEB;
 }
