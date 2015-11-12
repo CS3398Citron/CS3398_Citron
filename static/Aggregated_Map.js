@@ -1,13 +1,16 @@
 var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743};
-var Markers = [];
-var InfoWindows = [];
+
+var numInfoMarkers = 0;
+
+
+
+var InfoMarkers = [];
 
 //Initialize the map
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 10,
-		center: cityCenter,
-		//mapTypeId: google.maps.MapTypeId.SATELLITE
+		center: cityCenter
 	});
 	
 	//Generate Heatmap from getPoints()
@@ -31,8 +34,10 @@ function initMap() {
 			title: 'Hover Title'
 		});
 		
+		
+		
 		//replace newline char with space
-		post = post.replace(/\n/g, " ");
+		//post = post.replace(/\n/g, " ");
 		
 		var tags = [];
 		var newTags = post.split('#');
@@ -55,17 +60,26 @@ function initMap() {
             content: contentString
         });
 		
-		Markers.push(marker);
-		InfoWindows.push(infowindow);
+		//Custom object
+		var newInfoMarker = {Marker:null, InfoWindow:null, index:0};
+		newInfoMarker.Marker = marker;
+		newInfoMarker.InfoWindow = infowindow;
+		newInfoMarker.index = numInfoMarkers;
+			
+		InfoMarkers.push(newInfoMarker);
+		
+		//update numInfoMarkers
+		numInfoMarkers += 1;
 		
 		//Open selected marker's InfoWindow
-		google.maps.event.addListener(Markers[Markers.length - 1], 'click', function() {
-			InfoWindows[InfoWindows.length - 1].open(map,Markers[Markers.length - 1]);
+		google.maps.event.addListener(InfoMarkers[numInfoMarkers-1].Marker, 'click', function() {
+			var current = InfoMarkers[numInfoMarkers-1].index;
+			InfoMarkers[current].InfoWindow.open(map,InfoMarkers[current].Marker);
         });
 		
 		//Double click to delete marker
-		google.maps.event.addListener(Markers[Markers.length - 1], 'dblclick', function() {
-			Markers[Markers.length - 1].setMap(null);
+		google.maps.event.addListener(InfoMarkers[numInfoMarkers-1].Marker, 'dblclick', function() {
+			InfoMarkers[numInfoMarkers-1].Marker.setMap(null);
         });
 	}
 	
@@ -88,25 +102,24 @@ function initMap() {
 	// Sets the map on all InfoMarkers in the array.
 	function setMapOnAll(map, array) {
 		for (var i = 0; i < array.length; i++) {
-			Markers[i].setMap(map);
+			InfoMarkers[i].Marker.setMap(map);
 		}
 	}
 	
 	// Removes the markers from the map, but keeps them in the array.
 	document.getElementById('hideMarkers').onclick = function hideMarkers() {
-	  setMapOnAll(null, Markers);
+	  setMapOnAll(null, InfoMarkers);
 	}
 
 	// Shows any markers currently in the array.
 	document.getElementById('showMarkers').onclick = function showMarkers() {
-	  setMapOnAll(map, Markers);
+	  setMapOnAll(map, InfoMarkers);
 	}
 
 	// Deletes all markers in the array by removing references to them.
 	document.getElementById('deleteMarkers').onclick = function deleteMarkers() {
-	  setMapOnAll(null, Markers);
-	  Markers = [];
-	  InfoWindows = [];
+	  setMapOnAll(null, InfoMarkers);
+	  InfoMarkers = [];
 	}
 	
 	document.getElementById('searchTag').onclick = function searchTag() {
@@ -114,15 +127,15 @@ function initMap() {
 	  // infoWindow and Markers are unrelated and therefore cannot be associated together as one object, solution requires database calls and results through a query
 	  var tagged = [];
 	  var checkTag;
-	  for (var i = 0; i < Markers.length; i++) {
-		  setMapOnAll(null, Markers);
+	  for (var i = 0; i < InfoMarkers.length; i++) {
+		  setMapOnAll(null, InfoMarkers);
 	  }
-	  for (var i = 0; i < InfoWindows.length; i++) {
+	  for (var i = 0; i < InfoMarkers.length; i++) {
 		  //get tag from InfoWindow
-		  checkTag = InfoWindows[i].content.split("<tag>Tag: ")[1].split("</tag>")[0]+" ";
+		  checkTag = InfoMarkers[i].InfoWindow.content.split("<tag>Tag: ")[1].split("</tag>")[0]+" ";
 		  
 		if(checkTag === tag) {
-			tagged.push(Markers[i]);
+			tagged.push(InfoMarkers[i]);
 		}
 	  }
 
