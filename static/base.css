@@ -1,7 +1,7 @@
-
 /* Layout */
 body {
     min-width: 630px;
+    width: 100%;
 }
 
 #container {
@@ -17,6 +17,7 @@ body {
 #center {
     padding: 10px 20px;
     vertical-align: middle;
+	margin:auto;
     width: 100%;
 }
 
@@ -83,6 +84,7 @@ p {
     padding: 1em;
     background: #9fa91f;
     text-align:center;
+	margin:auto;
 }
 
 #left {
@@ -97,7 +99,10 @@ p {
 
 #center {
     background: #fff;
-     min-height:200px;
+    min-height:200px;
+	text-align:center;
+	padding:auto;
+    margin: auto;
 }
 
 #container .column {
@@ -107,6 +112,7 @@ p {
 table {
     text-align:center;
     border-color:#fff;
+	margin: 0 auto;
 }
 
 img {
@@ -118,14 +124,15 @@ img {
     border-radius: 25px;
 }
 
-#icons i{
+.icons i{
+	padding: 5px 0px 5px 0px;
     color: #9fa91f;
 }
 
-#icons i:hover, #footer #icons i:hover{
-    color: black;
+#footer .icons i{
+    color:#F7FDEB;
 }
 
-#footer #icons i{
-    color:#F7FDEB;
+.icons i:hover, #footer .icons i:hover{
+    color: black;
 }
