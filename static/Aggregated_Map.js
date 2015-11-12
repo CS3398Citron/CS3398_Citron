@@ -1,10 +1,15 @@
 var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743};
 
+//Call getPoints to generate random points for heatmap
+var heatPoints = getPoints();
+
 var numInfoMarkers = 0;
 
-
-
 var InfoMarkers = [];
+
+
+posts = [];
+postNum = 1;
 
 //Initialize the map
 function initMap() {
@@ -15,12 +20,25 @@ function initMap() {
 	
 	//Generate Heatmap from getPoints()
 	heatmap = new google.maps.visualization.HeatmapLayer({
-		data: getPoints(),
+		data: heatPoints,
 		map: map
+	});
+	
+	//Add post associated to every heat point
+	$.ajax({
+		url:"/admin/postsJsonObject/",
+		context: document.body
+	}).done(function(data) {
+		posts = data.split("\",");
+		for(var i = 0; i < heatPoints.length; i++)
+		{
+			addMarker(heatPoints[numInfoMarkers], posts[postNum].substr(1,posts[postNum].length));
+		}
+		postNum+= 2;
 	});
 
 	//Add a marker to the map when called
-	function addMarker(event, post) {
+	function addMarker(location, post) {
 		
 		if(post === []) {
 			alert("Null post");
@@ -29,13 +47,11 @@ function initMap() {
 		
 		//Marker
 		var marker = new google.maps.Marker({
-			position: event.latLng,
+			position: location,
 			map: map,
 			title: 'Hover Title'
 		});
-		
-		
-		
+
 		//replace newline char with space
 		//post = post.replace(/\n/g, " ");
 		
@@ -52,21 +68,22 @@ function initMap() {
 		
 		//InfoWindow
 		var contentString = 
-		'<h1>Header of Tag</h1>'+
-		'<p>Location: '+event.latLng+'</p>'+
+		'<h2>Location: '+location+'</h2>'+
 		'<post>'+post+'</post><br>'+
 		'<strong><tag>Tags: '+tags+'</tag></strong>';
 		var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
 		
-		//Custom object
-		var newInfoMarker = {Marker:null, InfoWindow:null, index:0};
-		newInfoMarker.Marker = marker;
-		newInfoMarker.InfoWindow = infowindow;
-		newInfoMarker.index = numInfoMarkers;
+		//Custom InfoMarker object
+		var InfoMarker = {
+			Marker:marker,
+			InfoWindow:infowindow,
+			heatPoint:heatPoints[numInfoMarkers],
+			index:numInfoMarkers
+		};
 			
-		InfoMarkers.push(newInfoMarker);
+		InfoMarkers.push(InfoMarker);
 		
 		//update numInfoMarkers
 		numInfoMarkers += 1;
@@ -83,21 +100,9 @@ function initMap() {
         });
 	}
 	
-	posts = [];
-	postNum = 1;
-	
 	//Calls addMarker when map is clicked
-	google.maps.event.addListener(map, 'click', function(event) {
-		//Call static file to generate random 
-		$.ajax({
-			url:"/admin/postsJsonObject/",
-			context: document.body 
-		}).done(function(data) {
-			posts = data.split("\",");
-			addMarker(event, posts[postNum].substr(1,posts[postNum].length));
-			postNum+= 2;
-		});
-	});
+	// google.maps.event.addListener(map, 'click', function(event) {
+	// });
 	
 	// Sets the map on all InfoMarkers in the array.
 	function setMapOnAll(map, array) {
@@ -145,14 +150,15 @@ function initMap() {
 
 	}
 	document.getElementById('highlight').onclick = function highlight(){
-		var CityHightlight;
-		var paths = [];
-
+		var cityHightlight;
 		//Parse HTML into Google Maps LatLng Objects
 		$.ajax({
 			url:"/static/AustinPolygon.html",
 			context: document.body 
-			}).done(function(data) {
+		}).done(function(data) {
+			
+			var paths = [];
+
 			data = data.split(" ");
 			for(var i = 0; i < data.length; i++) {
 				var x = data[i].split(",");
@@ -160,7 +166,7 @@ function initMap() {
 			}
 		
 			//DRAW THE POLYGON OR POLYLINE
-			CityHightlight = new google.maps.Polygon({
+			cityHightlight = new google.maps.Polygon({
 				clickable: false,
 				paths: paths,
 				strokeColor: 'black',
@@ -169,22 +175,24 @@ function initMap() {
 				fillColor: 'white',
 				fillOpacity: 0
 			});
-			CityHightlight.setMap(map);
+			cityHightlight.setMap(map);
 		});
+		return cityHightlight;
 	}
+	
 }
 
 
 function getPoints() {
 	
-	var heatPoints = [];
+	var genPoints = [];
 	//Generate random points
 	for(var i = 0; i < 10; i++) {
-		heatPoints.push(new google.maps.LatLng(cityCenter.lat + Math.random() % 0.1, cityCenter.lng + Math.random() % 0.1));
-		heatPoints.push(new google.maps.LatLng(cityCenter.lat - Math.random() % 0.1, cityCenter.lng - Math.random() % 0.1));
+		genPoints.push(new google.maps.LatLng(cityCenter.lat + Math.random() % 0.1, cityCenter.lng + Math.random() % 0.1));
+		genPoints.push(new google.maps.LatLng(cityCenter.lat - Math.random() % 0.1, cityCenter.lng - Math.random() % 0.1));
 	}
 	
-	return heatPoints;
+	return genPoints;
 }
 	
 function changeGradient() {
