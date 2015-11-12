@@ -30,11 +30,7 @@
                 </table>
             </main>
             <nav id="left" class="column">
-                <div class="icons">
-                    <a href ="/"><i class="fa fa-home fa-2x"></i></i></a>
-                    <a href ="/Aggregated_Map/"><i class="fa fa-map-marker fa-2x"></i></a>
-                    <a href ="/Sentiment_Data/"><i class="fa fa-database fa-2x"></i></i></a>
-                </div>
+                {% include "left_nav.html" %}
                 <article>
                         <h1>Team Citron:</h1>
                         <p>In the center of this page are two links, one takes you to the map of the city of Austin with a heat map for user sentiment data, and the other takes you to the data page.</p>
@@ -49,10 +45,7 @@
         </div>
         <div id="footer-wrapper">
             <footer id="footer">
-                <div class="icons">
-                    <a href ="https://twitter.com/austintexasgov"><i class="fa fa-twitter-square fa-2x"></i></a>
-                    <a href ="https://www.facebook.com/places/Things-to-do-in-Austin-Texas/106224666074625/"><i class="fa fa-facebook-square fa-2x"></i></a>
-                </div>
+                {% include "footer.html" %}
             </footer>
         </div>
     </body>

@@ -20,19 +20,12 @@
                 Placeholder
             </main>
             <nav id="left" class="column">
-                <div class="icons">
-                    <a href ="/"><i class="fa fa-home fa-2x"></i></i></a>
-                    <a href ="/Aggregated_Map/"><i class="fa fa-map-marker fa-2x"></i></a>
-                    <a href ="/Sentiment_Data/"><i class="fa fa-database fa-2x"></i></i></a>
-                </div>
+                {% include "left_nav.html" %}
             </nav>
             <nav id="right" class="column"></nav>
         </div>
         <footer id="footer">
-            <div class="icons">
-                    <a href ="https://twitter.com/austintexasgov"><i class="fa fa-twitter-square fa-2x"></i></a>
-                    <a href ="https://www.facebook.com/places/Things-to-do-in-Austin-Texas/106224666074625/"><i class="fa fa-facebook-square fa-2x"></i></a>
-            </div>
+           {% include "footer.html" %}
          </footer>
 	</body>
 	<noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
