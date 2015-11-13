@@ -21,9 +21,24 @@ body {
 }
 #center #map {
 	border: 3px solid white; 
+	padding:3px;
 	width:80%;
 	height:350px;
 	margin: 0 auto;
+}
+
+#map-wrapper{
+	background: #DAE9BC;
+	margin:auto;
+}
+
+#map-wrapper h1{
+	position:absolute;
+	width:100%;
+	padding-top:12%;
+	margin: 0 auto;
+	text-align:center;
+	vertical-align: middle;
 }
 
 /* Search */

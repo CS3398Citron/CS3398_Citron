@@ -83,13 +83,13 @@ p {
     font-size: large;
     padding: 1em;
     background: #9fa91f;
-    text-align:center;
-	margin:auto;
+    text-align: center;
+	margin: auto;
 }
 
 #left {
     background: #DAE9BC;
-    min-height:200px;
+    min-height: 200px;
 }
 
 #right {
@@ -99,8 +99,8 @@ p {
 
 #center {
     background: #fff;
-    min-height:200px;
-	text-align:center;
+    min-height: 200px;
+	text-align: center;
 	padding:auto;
     margin: auto;
 }
@@ -116,8 +116,8 @@ table {
 }
 
 img {
-    height:200px;
-    width:200px;
+    height: 200px;
+    width: 200px;
 }
 
 #db {

@@ -1,26 +1,29 @@
-var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743}, postNum = 1, MAX_POINTS = 250;
 
-// Call getPoints to generate random points for heatmap
-var heatPoints = getPoints(MAX_POINTS);
+
+var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743}, postNum = 1;
+
+//SAMPLE DATA MAX SIZE
+//var MAX_POINTS = 11662; 
+var MAX_POINTS = 1000;
+	
+var cityHightlight;
 
 var InfoMarkers = [], posts = [];
 
 // Initialize the map
 function initMap() {
+	document.getElementById('map').style.visibility = "hidden";
+	
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 10,
 		center: cityCenter
 	});
 	
-	// Generate Heatmap from getPoints()
-	heatmap = new google.maps.visualization.HeatmapLayer({
-		data: heatPoints,
-		radius:5,
-		map: map
-	});
+	getPoints(MAX_POINTS);
 	
 	// Add post associated to every heat point
 	$.ajax({
+		type:"GET",
 		url:"/admin/postsJsonObject/",
 		context: document.body
 	}).done(function(data) {
@@ -38,11 +41,10 @@ function initMap() {
 			posts.push(data[i]);
 		}
 		
-		for(var i = 0; i < heatPoints.length; i++) {
-			addMarker(heatPoints[InfoMarkers.length], posts[postNum].substr(1,posts[postNum].length));
-			postNum+= 1;
+		for(var i = 0; i < heatmap.data.length; i++) {
+			addMarker(heatmap.data.getAt(InfoMarkers.length), posts[postNum].substr(1,posts[postNum].length));
+			postNum++;
 		}
-		
 	});
 
 	// Add a marker to the map when called
@@ -60,6 +62,7 @@ function initMap() {
 			title: location.toString()
 		});
 		
+		//Only display the first 20 markers
 		if(InfoMarkers.length < 20){
 			marker.setMap(map);
 		}
@@ -95,7 +98,7 @@ function initMap() {
 		var InfoMarker = {
 			Marker:marker,
 			InfoWindow:infowindow,
-			heatPoint:heatPoints[InfoMarkers.length]
+			heatPoint:heatmap.data.getAt(InfoMarkers.length)
 		};
 			
 		InfoMarkers.push(InfoMarker);
@@ -123,6 +126,18 @@ function initMap() {
 		}
 	}
 	
+	//Displays highlight of city
+	document.getElementById('highlight').onclick = function highlight(){
+		if(cityHightlight.strokeOpacity === 0) {
+			cityHightlight.strokeOpacity = 1;
+			cityHightlight.setMap(map);
+		}
+		else {
+			cityHightlight.strokeOpacity = 0;
+			cityHightlight.setMap(null);
+		}
+	}
+	
 	// Removes the markers from the map, but keeps them in the array.
 	document.getElementById('hideMarkers').onclick = function hideMarkers() {
 	 setMapOnAll(null, InfoMarkers);
@@ -147,7 +162,7 @@ function initMap() {
 		 setMapOnAll(null, InfoMarkers);
 	 }
 	 for (var i = 0; i < InfoMarkers.length; i++) {
-		 // get tag from InfoWindow
+		 // Get tag from InfoWindow
 		 checkTag = InfoMarkers[i].InfoWindow.content.split("<tag>Tag: ")[1].split("</tag>")[0]+" ";
 		 
 		if(checkTag === tag) {
@@ -160,54 +175,74 @@ function initMap() {
 	 }
 
 	}
-	document.getElementById('highlight').onclick = function highlight(){
-		var cityHightlight;
-		// Parse HTML into Google Maps LatLng Objects
-		$.ajax({
-			url:"/static/AustinPolygon.html",
-			context: document.body 
-		}).done(function(data) {
-			
-			var paths = [];
-
-			data = data.split(" ");
-			for(var i = 0; i < data.length; i++) {
-				var x = data[i].split(",");
-				paths.push(new google.maps.LatLng(x[1],x[0]));
-			}
-		
-			// DRAW THE POLYGON OR POLYLINE
-			cityHightlight = new google.maps.Polygon({
-				clickable: false,
-				paths: paths,
-				strokeColor: 'black',
-				strokeOpacity: 1,
-				strokeWeight: 1,
-				fillColor: 'white',
-				fillOpacity: 0
-			});
-			cityHightlight.setMap(map);
-		});
-		return cityHightlight;
-	}
-	
 }
-
 
 function getPoints(MAX_POINTS) {
+	// Parse HTML into Google Maps LatLng Objects
+	$.ajax({
+		url:"/static/AustinPolygon.html"
+	}).done(function(data) {
+		
+		var paths = [];
+
+		data = data.split(" ");
+		for(var i = 0; i < data.length; i++) {
+			var coords = data[i].split(",");
+			paths.push(new google.maps.LatLng(coords[1],coords[0]));
+		}
 	
-	var genPoints = [];
-	// Generate random points
-	for(var i = 0; i < MAX_POINTS; i++) {
-		if(i < MAX_POINTS/2)
-			genPoints.push(new google.maps.LatLng(cityCenter.lat + Math.random() % 0.1, cityCenter.lng + Math.random() % 0.1));
-		else
-			genPoints.push(new google.maps.LatLng(cityCenter.lat - Math.random() % 0.1, cityCenter.lng - Math.random() % 0.1));
-	}
-	
-	return genPoints;
+		// DRAW THE POLYGON OR POLYLINE
+		cityHightlight = new google.maps.Polygon({
+			clickable: false,
+			paths: paths,
+			strokeColor: 'black',
+			strokeOpacity: 0.1,
+			strokeWeight: 1,
+			fillColor: 'white',
+			fillOpacity: 0
+		});
+		
+		cityHightlight.setMap(map);
+		
+		setTimeout(function() {
+			var genPoints = [];
+			var bounds = new google.maps.LatLngBounds();
+			
+			// Calculate the bounds of the polygon
+			for (var i = 0; i < cityHightlight.getPath().getLength(); i++) {
+				bounds.extend(cityHightlight.getPath().getAt(i));
+			}
+
+			var sw = bounds.getSouthWest();
+			var ne = bounds.getNorthEast();
+
+			var numPoints = 0;
+			//Main source of lag in map
+			while(numPoints < MAX_POINTS) {
+			   var ptLat = Math.random() * (ne.lat() - sw.lat()) + sw.lat();
+			   var ptLng = Math.random() * (ne.lng() - sw.lng()) + sw.lng();
+			   var point = new google.maps.LatLng(ptLat,ptLng);
+			   // Add point if it's inside the bounds of polygon
+			   if (google.maps.geometry.poly.containsLocation(point,cityHightlight)) {
+					genPoints.push(new google.maps.LatLng(ptLat,ptLng));
+					numPoints++;
+			   }
+			}
+			
+				// Generate Heatmap from getPoints()
+			heatmap = new google.maps.visualization.HeatmapLayer({
+				data: genPoints,
+				radius:3,
+				map: map
+			});
+		
+		document.getElementById('map').style.visibility = "visible";
+		document.getElementById('map-wrapper').style.visibility = "hidden";
+		// Wait 1000 milliseconds for polygon to finish generating
+		}, 1000);
+	});
 }
-	
+
 function changeGradient() {
  var gradient = [
 	'rgba(0, 255, 255, 0)',
