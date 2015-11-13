@@ -86,11 +86,6 @@ function initMap() {
 		//remove â€¦
 		post = post.replace(/â€¦/gi, "");
 		
-		
-
-		
-		console.log(post);
-		
 		var tags = [];
 		var newTags = post.split('#');
 		
