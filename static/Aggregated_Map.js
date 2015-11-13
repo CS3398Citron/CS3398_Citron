@@ -75,23 +75,34 @@ function initMap() {
 		else {
 			marker.setMap(null);
 		}
+		
+		var time = post.split(/\\nat /g)[1];
 
 		// Cleaning unicode garbage out of posts
 		//remove unicode
 		post = post.replace(/\\u([\d\w]{4})/gi, function (match, grp) { return String.fromCharCode(parseInt(grp, 16)); } );
-		//remove newline chars
-		post = post.replace(/\\n/gi, " ");
 		//remove escaped quotes
 		post = post.replace(/\\"/gi, '"');
+		//remove newline chars
+		post = post.replace(/\\n/gi, " ");
 		//remove â€¦
 		post = post.replace(/â€¦/gi, "");
+		
+		
+		
+		
+		var posterName = post.split('@');
+		var posterHandle = '@'+posterName[1].split(" ")[0];
+		posterName = posterName[0];
+		
+		post = post.split(posterHandle+' ')[1];
 		
 		var tags = [];
 		var newTags = post.split('#');
 		
 		// Search for hashtags, split by tag and "\"
 		for(var i = 1; i < newTags.length; i++) {
-			tags.push(newTags[i].split(" ")[0].split("\\")[0]+" ");
+			tags.push(newTags[i].split(" ")[0]+" ");
 		}
 		
 		if(tags.length === 0) {
@@ -101,8 +112,11 @@ function initMap() {
 		// InfoWindow
 		var contentString = 
 		'<h2>Location: '+location+'</h2>'+
-		'<post>'+post+'</post><br>'+
-		'<strong><tag>Tags: '+tags+'</tag></strong>';
+		'<div>'+post+'</div><br>'+
+		'<div>Poster: '+posterName+'</div>'+
+		'<div>Twitter Handle: '+posterHandle+'</div>'+
+		'<div>Time of Post: '+time+'</div>'+
+		'<strong><div>Tags: '+tags+'</div></strong>';
 		var infowindow = new google.maps.InfoWindow({
       content: contentString
     });
