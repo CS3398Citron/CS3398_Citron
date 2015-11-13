@@ -37,7 +37,13 @@ function initMap() {
 		// (post is from model statement to model poster)
 		for(var i = 0; i < data.length; i++) {
 			data[i] = data[i].split('poster')[0];
-			data[i] = data[i].substr(0,data[i].length-4);
+			if(data[i].includes('swarmapp')){
+				data[i] = data[i].split('swarmapp')[0];
+			}
+			else {
+				data[i] = data[i].substr(0,data[i].length-4);
+			}
+			
 			posts.push(data[i]);
 		}
 		
@@ -70,8 +76,20 @@ function initMap() {
 			marker.setMap(null);
 		}
 
-		// replace newline char with space
-		// post = post.replace(/\n/g, " ");
+		// Cleaning unicode garbage out of posts
+		//remove unicode
+		post = post.replace(/\\u([\d\w]{4})/gi, function (match, grp) { return String.fromCharCode(parseInt(grp, 16)); } );
+		//remove newline chars
+		post = post.replace(/\\n/gi, " ");
+		//remove escaped quotes
+		post = post.replace(/\\"/gi, '"');
+		//remove â€¦
+		post = post.replace(/â€¦/gi, "");
+		
+		
+
+		
+		console.log(post);
 		
 		var tags = [];
 		var newTags = post.split('#');

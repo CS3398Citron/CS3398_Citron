@@ -28,6 +28,7 @@ body {
 }
 
 #map-wrapper{
+	border: 3px solid white; 
 	background: #DAE9BC;
 	margin:auto;
 }
