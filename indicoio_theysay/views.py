@@ -1,14 +1,16 @@
+from django.shortcuts import render
+
 import indicoio
-import django
+
+import json
 from sentiments.models import Post
 from django.core.serializers import serialize
-import json
-
-#obj = Post()
-
-allentries = serialize('json', Post.objects.all())
+from django.http import HttpResponse
 
 
+def indicoio(request):
+	allentries = serialize('json', Post.objects.all())
+			
 # indicoio.config.api_key = 'd58464ed4f71c725f4d0b4ed0a1ac04c'
 
 # # single example
@@ -39,8 +41,4 @@ allentries = serialize('json', Post.objects.all())
 # "Like swimming in a glass of ice water. It brrrrrs so good. (@ Deep Eddy Park - @austintexasgov in Austin, TX) swarmapp.com/c/kd7mvZvGEdm" +
 # "at 18:23:32 on 8/29/2015")
 # f.write(json.dumps(data, indent=4))
-f.close()
-
-
-
-
+	return HttpResponse(allentries)
