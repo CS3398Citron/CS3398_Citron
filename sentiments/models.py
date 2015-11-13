@@ -6,4 +6,4 @@ class Post(models.Model):
     statement = models.TextField()
 
     def __unicode__(self):
-        return self.poster
+        return self.statement

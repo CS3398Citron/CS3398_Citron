@@ -24,7 +24,7 @@ function initMap() {
 	// Add post associated to every heat point
 	$.ajax({
 		type:"GET",
-		url:"/admin/postsJsonObject/",
+		url:"/postsJsonObject/",
 		context: document.body
 	}).done(function(data) {
 		data = data.split('statement');
@@ -56,6 +56,8 @@ function initMap() {
 	// Add a marker to the map when called
 	function addMarker(location, post) {
 		
+		var info = [location, post, "", "", "", "", "", ""];
+		
 		if(post === []) {
 			alert("Null post");
 			return;
@@ -76,26 +78,42 @@ function initMap() {
 			marker.setMap(null);
 		}
 		
-		var time = post.split(/\\nat /g)[1];
+		//Time
+		var time;
+		if(post.includes('at 1')) {
+			time = post.split(/\\nat /g)[1];
+		}
+		else if(post.includes('at 2')) {
+			time = post.split(/\\nat /g)[1];
+		}
+		else {
+			time = "0";
+		}
 
-		// Cleaning unicode garbage out of posts
-		//remove unicode
-		post = post.replace(/\\u([\d\w]{4})/gi, function (match, grp) { return String.fromCharCode(parseInt(grp, 16)); } );
-		//remove escaped quotes
-		post = post.replace(/\\"/gi, '"');
-		//remove newline chars
-		post = post.replace(/\\n/gi, " ");
-		//remove â€¦
-		post = post.replace(/â€¦/gi, "");
+		post = cleanPost(post);
 		
-		
-		
-		
+
+		//Poster's name and Twitter Handle
 		var posterName = post.split('@');
 		var posterHandle = '@'+posterName[1].split(" ")[0];
 		posterName = posterName[0];
+		info[2] = posterName;
+		info[3] = posterHandle;
 		
+		
+		//remove name and handle
 		post = post.split(posterHandle+' ')[1];
+		//remove time
+		post = post.split( 'at '+info[4])[0];
+		
+		//remove reply
+		if(time !== "0" && time.includes(' in reply to ')) {
+			info[4] = time.split(' in reply to ')[0];
+			info[5] = time.split(' in reply to ')[1];
+		}
+		else {
+			info[4] = time;
+		}
 		
 		var tags = [];
 		var newTags = post.split('#');
@@ -106,17 +124,23 @@ function initMap() {
 		}
 		
 		if(tags.length === 0) {
-			tags = "None";
+			tags = "";
 		}
 		
 		// InfoWindow
 		var contentString = 
-		'<h2>Location: '+location+'</h2>'+
-		'<div>'+post+'</div><br>'+
-		'<div>Poster: '+posterName+'</div>'+
-		'<div>Twitter Handle: '+posterHandle+'</div>'+
-		'<div>Time of Post: '+time+'</div>'+
-		'<strong><div>Tags: '+tags+'</div></strong>';
+		'<h2>Location: '+info[0]+'</h2>'+
+		'<div>'+info[1]+'</div><br>';
+		if(info[2].length > 0)
+			contentString+='<div>Poster: '+info[2]+'</div>';
+		if(info[3].length > 0)
+			contentString+='<div>Twitter Handle: '+info[3]+'</div>';
+		if(info[4] !== "0")
+			contentString+='<div>Time of Post: '+info[4]+'</div>';
+		if(info[5].length > 0)
+			contentString+='<div>Replying to: '+info[5]+'</div>';
+		if(info[6].length > 0)
+			contentString+='<strong><div>Tags: '+info[6]+'</div></strong>';
 		var infowindow = new google.maps.InfoWindow({
       content: contentString
     });
@@ -268,6 +292,21 @@ function getPoints(MAX_POINTS) {
 		// Wait 1000 milliseconds for polygon to finish generating
 		}, 1000);
 	});
+}
+
+function cleanPost(post) {
+	// Cleaning unicode garbage out of posts
+	//remove unicode
+	post = post.replace(/\\u([\d\w]{4})/gi, function (match, grp) { return String.fromCharCode(parseInt(grp, 16)); } );
+	//remove escaped quotes
+	post = post.replace(/\\"/gi, '"');
+	//remove newline chars
+	post = post.replace(/\\n/gi, " ");
+
+	//remove â€¦
+	post = post.replace(/â€¦/gi, "");
+	
+	return post;
 }
 
 function changeGradient() {
