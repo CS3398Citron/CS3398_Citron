@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'Citron',
     'import_export',
     'sentiments',
-	'indicoio_theysay',
 )
 
 MIDDLEWARE_CLASSES = (
