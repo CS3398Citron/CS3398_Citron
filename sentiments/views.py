@@ -10,9 +10,9 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 
 def postsJsonObject(request):
-	if not request.user.is_authenticated():
-		return redirect('/admin/login')
-	else:
-		postsJson = serialize('json', Post.objects.all())
-		postsJson = postsJson.strip("[]")
-		return HttpResponse(postsJson)
+	# if not request.user.is_authenticated():
+		# return redirect('/admin/login')
+	# else:
+	postsJson = serialize('json', Post.objects.all())
+	postsJson = postsJson.strip("[]")
+	return HttpResponse(postsJson)

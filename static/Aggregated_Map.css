@@ -22,8 +22,8 @@ body {
 #center #map {
 	border: 3px solid white; 
 	padding:3px;
-	width:80%;
-	height:350px;
+	width:100%;
+	height:600px;
 	margin: 0 auto;
 }
 
@@ -31,11 +31,12 @@ body {
 	border: 3px solid white; 
 	background: #DAE9BC;
 	margin:auto;
+	width:80%
 }
 
 #map-wrapper h1{
 	position:absolute;
-	width:100%;
+	width:80%;
 	padding-top:12%;
 	margin: 0 auto;
 	text-align:center;
