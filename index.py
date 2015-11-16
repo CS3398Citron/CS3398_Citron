@@ -1,4 +1,5 @@
 import indicoio
+from django.conf import settings
 from sentiments.models import Post
 import json
 
