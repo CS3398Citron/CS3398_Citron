@@ -1,12 +1,21 @@
 import indicoio
+<<<<<<< HEAD
 import sentiments
+=======
+import django
+>>>>>>> f802a0aea43da3c2c87748f83f3fb680b36c80b4
 from sentiments.models import Post
+from django.core.serializers import serialize
 import json
 
 #obj = Post()
 
+<<<<<<< HEAD
 #f = open('myData.json', 'w')
 #all_entries = Post.objects.all()
+=======
+allentries = serialize('json', Post.objects.all())
+>>>>>>> f802a0aea43da3c2c87748f83f3fb680b36c80b4
 
 
 # indicoio.config.api_key = 'd58464ed4f71c725f4d0b4ed0a1ac04c'
