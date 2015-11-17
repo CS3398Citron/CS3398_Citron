@@ -1,6 +1,4 @@
-
-
-var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743}, postNum = 1;
+var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743}, DELAY = 150;
 
 //SAMPLE DATA MAX SIZE
 //var MAX_POINTS = 11662; 
@@ -25,41 +23,40 @@ function initMap() {
 	$.ajax({
 		type:"GET",
 		url:"/postsJsonObject/",
-		context: document.body
+		context: document.body,
+        dataType:"json",
 	}).done(function(data) {
-		data = data.split('statement');
-		
-		for(var i = 0; i < data.length; i++) {
-			data[i] = data[i].substr(3,data[i].length);
-		}
-		
-		// Clean garbage from posts 
-		// (post is from model statement to model poster)
-		for(var i = 0; i < data.length; i++) {
-			data[i] = data[i].split('poster')[0];
-			if(data[i].includes('swarmapp')){
-				data[i] = data[i].split('swarmapp')[0];
-			}
-			else {
-				data[i] = data[i].substr(0,data[i].length-4);
-			}
-			
-			posts.push(data[i]);
-		}
-		
-		for(var i = 0; i < heatmap.data.length; i++) {
-			addMarker(heatmap.data.getAt(InfoMarkers.length), posts[postNum].substr(1,posts[postNum].length));
-			postNum++;
-		}
+
+        for (var key in data) {
+          if (data.hasOwnProperty(key)) {
+              innerData = data[key];
+               for (var i in innerData) {
+                    var fields = innerData["fields"];
+                    var post = {
+                        sentiment:fields["sentiment"],
+                        tags:fields["tags"],
+                        timestamp:fields["timestamp"],
+                        value:fields["value"],
+                        statement:fields["statement"],
+                        poster:fields["poster"]
+                    };
+                    posts.push(post);
+               }
+          }
+          else return;
+        }
+		setTimeout(function() {
+            for(var i = 0; i < heatmap.data.length && i < posts.length; i++) {
+                addMarker(heatmap.data.getAt(InfoMarkers.length), posts[i]);
+            }
+        }, DELAY);
 	});
 
 	// Add a marker to the map when called
 	function addMarker(location, post) {
 		
-		var info = [location, post, "", "", "", "", "", ""];
-		
-		if(post === []) {
-			alert("Null post");
+		if(post === undefined) {
+			console.log("addMarker was sent undefined post");
 			return;
 		}
 		
@@ -77,70 +74,19 @@ function initMap() {
 		else {
 			marker.setMap(null);
 		}
-		
-		//Time
-		var time;
-		if(post.includes('at 1')) {
-			time = post.split(/\\nat /g)[1];
-		}
-		else if(post.includes('at 2')) {
-			time = post.split(/\\nat /g)[1];
-		}
-		else {
-			time = "0";
-		}
 
-		post = cleanPost(post);
-		
-
-		//Poster's name and Twitter Handle
-		var posterName = post.split('@');
-		var posterHandle = '@'+posterName[1].split(" ")[0];
-		posterName = posterName[0];
-		info[2] = posterName;
-		info[3] = posterHandle;
-		
-		
-		//remove name and handle
-		post = post.split(posterHandle+' ')[1];
-		//remove time
-		post = post.split( 'at '+info[4])[0];
-		
-		//remove reply
-		if(time !== "0" && time.includes(' in reply to ')) {
-			info[4] = time.split(' in reply to ')[0];
-			info[5] = time.split(' in reply to ')[1];
-		}
-		else {
-			info[4] = time;
-		}
-		
-		var tags = [];
-		var newTags = post.split('#');
-		
-		// Search for hashtags, split by tag and "\"
-		for(var i = 1; i < newTags.length; i++) {
-			tags.push(newTags[i].split(" ")[0]+" ");
-		}
-		
-		if(tags.length === 0) {
-			tags = "";
-		}
-		
 		// InfoWindow
 		var contentString = 
-		'<h2>Location: '+info[0]+'</h2>'+
-		'<div>'+info[1]+'</div><br>';
-		if(info[2].length > 0)
-			contentString+='<div>Poster: '+info[2]+'</div>';
-		if(info[3].length > 0)
-			contentString+='<div>Twitter Handle: '+info[3]+'</div>';
-		if(info[4] !== "0")
-			contentString+='<div>Time of Post: '+info[4]+'</div>';
-		if(info[5].length > 0)
-			contentString+='<div>Replying to: '+info[5]+'</div>';
-		if(info[6].length > 0)
-			contentString+='<strong><div>Tags: '+info[6]+'</div></strong>';
+		'<h2>Comment</h2>'+
+		'<div>'+post["statement"]+'</div><br>';
+		if(post["poster"].length > 0)
+			contentString+='<div>Commenter: '+post["poster"]+'</div>';
+		if(post["timestamp"].length > 0)
+			contentString+='<div>Time of Post: '+post["timestamp"]+'</div>';
+		// if(post["recipient"].length > 0)
+			// contentString+='<div>Recipient: '+post["recipient"]+'</div>';
+		if(post["tags"].length > 0)
+			contentString+='<strong><div>Tags: '+post["tags"]+'</div></strong>';
 		var infowindow = new google.maps.InfoWindow({
       content: contentString
     });
@@ -253,7 +199,8 @@ function getPoints(MAX_POINTS) {
 			fillOpacity: 0
 		});
 		
-		cityHightlight.setMap(map);
+		cityHightlight.setMap(null);
+        cityHightlight.strokeOpacity = 0;
 		
 		setTimeout(function() {
 			var genPoints = [];
@@ -289,24 +236,9 @@ function getPoints(MAX_POINTS) {
 		
 		document.getElementById('map').style.visibility = "visible";
 		document.getElementById('map-wrapper').style.visibility = "hidden";
-		// Wait 1000 milliseconds for polygon to finish generating
-		}, 1000);
+		// Wait DELAY milliseconds for polygon to finish generating
+		}, DELAY);
 	});
-}
-
-function cleanPost(post) {
-	// Cleaning unicode garbage out of posts
-	//remove unicode
-	post = post.replace(/\\u([\d\w]{4})/gi, function (match, grp) { return String.fromCharCode(parseInt(grp, 16)); } );
-	//remove escaped quotes
-	post = post.replace(/\\"/gi, '"');
-	//remove newline chars
-	post = post.replace(/\\n/gi, " ");
-
-	//remove â€¦
-	post = post.replace(/â€¦/gi, "");
-	
-	return post;
 }
 
 function changeGradient() {
