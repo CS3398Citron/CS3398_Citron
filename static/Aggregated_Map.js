@@ -150,7 +150,7 @@ function initMap() {
 	}
 	
 	document.getElementById('searchTag').onclick = function searchTag() {
-	 var tag = document.getElementById('textarea').value;
+	 var tag = document.getElementById('textarea').value.toString();
 	 var tagged = [];
 	 var checkTag;
 	 for (var i = 0; i < InfoMarkers.length; i++) {
@@ -165,9 +165,10 @@ function initMap() {
              {
                  var flag = false;
                  checkTag = checkTag.split(",");
+                 console.log(checkTag);
                  for(var j = 0; j < checkTag.length && flag === false; j++)
                  {
-                      if(checkTag === tag) {
+                      if(checkTag[j] === tag) {
                         tagged.push(InfoMarkers[i]);
                         flag = true;
                       }
