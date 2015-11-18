@@ -1,32 +1,92 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
  "http://www.w3.org/TR/html4/strict.dtd">
- 
+
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		
-		{% load staticfiles %}
-        <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
-		<link href="{% static "Sentiment_Data.css" %}" rel="stylesheet" type="text/css" media="screen" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-		<title>Sentiment Data Citron</title>
-	</head>
-	<body>
-        <header id="header">
-            <h1>Sentiment Data</h1>
-        </header>
-        <div id="container">
-            <main id="center" class="column">
-                Placeholder
-            </main>
-            <nav id="left" class="column">
-                {% include "left_nav.html" %}
-            </nav>
-            <nav id="right" class="column"></nav>
-        </div>
-        <footer id="footer">
-           {% include "footer.html" %}
-         </footer>
-	</body>
-	<noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  {% load staticfiles %}
+  <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{% static "Sentiment_Data.css" %}" rel="stylesheet" type="text/css" media="screen" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>
+    var something = [];
+    var countPos = 0;
+    var countNeg = 0;
+    $.ajax({
+      type:"GET",
+      url:"/postsJsonObject/",
+      context: document.body,
+      dataType:"json",
+    }).done(function(data) {
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          innerData = data[key];
+          for (var i in innerData) {
+            var fields = innerData["fields"];
+            something.push(fields["sentiment"]);
+          }
+        }
+      }
+      for(var x=0; x < something.length; x++)
+        if(something[x] == "POS")
+          countPos++;
+        else if(something[x] == "NEG")
+          countNeg++;
+    });
+  </script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Sentiment", "Number", { role: "style" } ],
+        ["Positive", countPos, "blue"],
+        ["Negative", countNeg, "red"]
+        ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+       { calc: "stringify",
+       sourceColumn: 1,
+       type: "string",
+       role: "annotation" },
+       2]);
+
+      var options = {
+        title: "Sentiment Distrubition",
+        width: 600,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+      chart.draw(view, options);
+    }
+  </script>
+
+  <title>Summary of Comments</title>
+</head>
+<body>
+  <header id="header">
+    <h1>Summary of Comments</h1>
+  </header>
+  <div id="container">
+    <main id="center" class="column">
+      <div id="barchart_values" style="width: 900px; height: 500px;"></div>
+
+    </main>
+    <nav id="left" class="column">
+      {% include "left_nav.html" %}
+    </nav>
+    <nav id="right" class="column"></nav>
+  </div>
+  <footer id="footer">
+    {% include "footer.html" %}
+  </footer>
+</body>
+<noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
 </html>
