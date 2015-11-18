@@ -13,6 +13,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script>
     var something = [];
+    var countPos = 0;
+    var countNeg = 0;
     $.ajax({
       type:"GET",
       url:"/postsJsonObject/",
@@ -29,6 +31,11 @@
         }
       }
       alert(JSON.stringify(something));
+      for(var x=0; x < something.length; x++)
+        if(something[x] == "POS")
+          countPos++;
+        else if(something[x] == "NEG")
+          countNeg++;
     });
   </script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -38,8 +45,8 @@
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
         ["Sentiment", "Number", { role: "style" } ],
-        ["Positive", 7, "blue"],
-        ["Negative", 4, "red"]
+        ["Positive", countPos, "blue"],
+        ["Negative", countNeg, "red"]
         ]);
 
       var view = new google.visualization.DataView(data);
