@@ -21,7 +21,9 @@ class Post(models.Model):
     poster = models.CharField(max_length=100)
     statement = models.TextField()
     tags = models.ManyToManyField(Tag)
+    #Positive/Negative
     sentiment = models.CharField(max_length=3, choices=SENTM_CHOICES, null=True, blank=True)
+    #Positive/Negative % value
     value = models.DecimalField(max_digits=19, decimal_places=10, null=True, blank=True)
 
 
