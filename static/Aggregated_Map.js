@@ -29,19 +29,17 @@ function initMap() {
 
         for (var key in data) {
           if (data.hasOwnProperty(key)) {
-              innerData = data[key];
-               for (var i in innerData) {
-                    var fields = innerData["fields"];
-                    var post = {
-                        sentiment:fields["sentiment"],
-                        tags:fields["tags"],
-                        timestamp:fields["timestamp"],
-                        value:fields["value"],
-                        statement:fields["statement"],
-                        poster:fields["poster"]
-                    };
-                    posts.push(post);
-               }
+                innerData = data[key];
+                var fields = innerData["fields"];
+                var post = {
+                    sentiment:fields["sentiment"],
+                    tags:fields["tags"],
+                    timestamp:fields["timestamp"],
+                    value:fields["value"],
+                    statement:fields["statement"],
+                    poster:fields["poster"]
+                };
+                posts.push(post);
           }
           else return;
         }
@@ -88,8 +86,8 @@ function initMap() {
 		if(post["tags"].length > 0)
 			contentString+='<strong><div>Tags: '+post["tags"]+'</div></strong>';
 		var infowindow = new google.maps.InfoWindow({
-      content: contentString
-    });
+          content: contentString
+        });
 		
 		// Custom InfoMarker object
 		var InfoMarker = {
@@ -152,7 +150,7 @@ function initMap() {
 	}
 	
 	document.getElementById('searchTag').onclick = function searchTag() {
-	 var tag = document.getElementById('textarea').value;
+	 var tag = document.getElementById('textarea').value.toString();
 	 var tagged = [];
 	 var checkTag;
 	 for (var i = 0; i < InfoMarkers.length; i++) {
@@ -160,11 +158,27 @@ function initMap() {
 	 }
 	 for (var i = 0; i < InfoMarkers.length; i++) {
 		 // Get tag from InfoWindow
-		 checkTag = InfoMarkers[i].InfoWindow.content.split("<tag>Tag: ")[1].split("</tag>")[0]+" ";
-		 
-		if(checkTag === tag) {
-			tagged.push(InfoMarkers[i]);
-		}
+        if(InfoMarkers[i].InfoWindow.content.includes("<strong><div>Tags: ")) {
+             checkTag = InfoMarkers[i].InfoWindow.content.split("<strong><div>Tags: ")[1].split("</div></strong>")[0];
+     
+             if(checkTag.includes(","))
+             {
+                 var flag = false;
+                 checkTag = checkTag.split(",");
+                 console.log(checkTag);
+                 for(var j = 0; j < checkTag.length && flag === false; j++)
+                 {
+                      if(checkTag[j] === tag) {
+                        tagged.push(InfoMarkers[i]);
+                        flag = true;
+                      }
+                 }
+            } 
+            else if(checkTag === tag) {
+                tagged.push(InfoMarkers[i]);
+            }
+        }
+		
 	 }
 
 	 for (var i = 0; i < tagged.length; i++) {
