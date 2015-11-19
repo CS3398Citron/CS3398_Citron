@@ -9,13 +9,35 @@
   <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
   <link href="{% static "Sentiment_Data.css" %}" rel="stylesheet" type="text/css" media="screen" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<title>Summary of Comments</title>
+</head>
+<body>
+  <header id="header">
+	<h1>Summary of Comments</h1>
+  </header>
+  <div id="container">
+	<main id="center" class="column">
+	  <div id="barchart_values"></div>
+	  <div id="chart_div"></div>
+	</main>
+	<nav id="left" class="column">
+	  {% include "left_nav.html" %}
+	</nav>
+	<nav id="right" class="column"></nav>
+  </div>
+  <footer id="footer">
+	{% include "footer.html" %}
+  </footer>
+</body>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script>
+	var DELAY = 1400;
     var something = [];
     var countPos = 0;
     var countNeg = 0;
     var countNul = 0;
+	
     $.ajax({
       type:"GET",
       url:"/postsJsonObject/",
@@ -46,9 +68,11 @@
 
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript">               <!-- scripts to form tree chart -->
+	
     google.load("visualization", "1", {packages:["treemap"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
+	setTimeout(function() {
       var data = google.visualization.arrayToDataTable([
         ['Category', 'Parent', 'Degree of Sentiment', 'Type'],
         ['Posts', null, 0, 0],
@@ -89,12 +113,15 @@
         bold: true,
         showTooltips: false
       });
+	  }, DELAY);
     }
   </script>
   <script type="text/javascript">                 <!--script to form bar graph-->
+	
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
+	setTimeout(function() {
       var data = google.visualization.arrayToDataTable([
         ["Sentiment", "Number", { role: "style" } ],
         ["Positive", countPos, 'green'],
@@ -120,28 +147,8 @@
       };
       var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
       chart.draw(view, options);
+	  }, DELAY);
     }
   </script>
-
-  <title>Summary of Comments</title>
-</head>
-<body>
-  <header id="header">
-    <h1>Summary of Comments</h1>
-  </header>
-  <div id="container">
-    <main id="center" class="column">
-      <div id="barchart_values" style="width: 100%; height: 50%;"></div>
-      <div id="chart_div" style="width: 100%; height: 50%;"></div>
-    </main>
-    <nav id="left" class="column">
-      {% include "left_nav.html" %}
-    </nav>
-    <nav id="right" class="column"></nav>
-  </div>
-  <footer id="footer">
-    {% include "footer.html" %}
-  </footer>
-</body>
 <noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
 </html>
