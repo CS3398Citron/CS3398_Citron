@@ -17,7 +17,7 @@
   </header>
   <div id="container">
 	<main id="center" class="column">
-	  <div id="barchart_values"></div>
+	  <div id="barchart_values"><br><br>Loading...</div>
 	  <div id="chart_div"></div>
 	</main>
 	<nav id="left" class="column">
@@ -30,7 +30,7 @@
   </footer>
 </body>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script>
 	var DELAY = 1400;
     var something = [];
@@ -103,15 +103,18 @@
       google.visualization.events.addListener(tree, 'select', selectHandler);
 
       tree.draw(data, {
-        minColor: 'red',
-        midColor: 'gray',
-        maxColor: 'green',
+        minColor: '#E53935',
+        midColor: '#BDBDBD',
+        maxColor: '#689F38',
         headerHeight: 20,
-        headerColor: 'black',
-        fontColor: 'white',
-        fontSize: 16,
-        bold: true,
-        showTooltips: false
+        headerColor: '#EEEEEE',
+        fontColor: 'black',
+        fontSize: 14,
+
+        showTooltips: false,
+        'tooltip':{
+          trigger: 'selection'
+        }
       });
 	  }, DELAY);
     }
@@ -121,34 +124,34 @@
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
-	setTimeout(function() {
-      var data = google.visualization.arrayToDataTable([
-        ["Sentiment", "Number", { role: "style" } ],
-        ["Positive", countPos, 'green'],
-        ["Negative", countNeg, "red"],
-        ["Unknown",  countNul, "gray"]
-        ]);
-      var view = new google.visualization.DataView(data);
-      view.setColumns([0, 1,
-       { calc: "stringify",
-       sourceColumn: 1,
-       type: "string",
-       role: "annotation" },
-       2]);
-      var options = {
-        title: "Sentiment Distrubition",
-        animation:{
-          "startup": true,
-          duration: 1000,
-          easing: 'in',
-        },
-        bar: {groupWidth: "95%"},
-        legend: { position: "none" },
-      };
-      var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
-      chart.draw(view, options);
-	  }, DELAY);
-    }
+  	  setTimeout(function() {
+        var data = google.visualization.arrayToDataTable([
+          ["Sentiment", "Number", { role: "style" } ],
+          ["Positive", countPos, '#689F38'],
+          ["Negative", countNeg, "#E53935"],
+          ["Unknown",  countNul, "#BDBDBD"]
+          ]);
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+         { calc: "stringify",
+         sourceColumn: 1,
+         type: "string",
+         role: "annotation" },
+         2]);
+        var options = {
+          title: "Sentiment Distrubition",
+          animation:{
+            "startup": true,
+            duration: 1000,
+            easing: 'in',
+          },
+          bar: {groupWidth: "95%"},
+          legend: { position: "none" },
+        };
+        var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+        chart.draw(view, options);
+  	  }, DELAY);
+  }
   </script>
 <noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
 </html>
