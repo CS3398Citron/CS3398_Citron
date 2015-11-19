@@ -19,12 +19,12 @@ from Citron.views import HomePageView
 from Citron.views import Aggregated_Map
 from Citron.views import Sentiment_Data
 from sentiments.views import postsJsonObject
-from indicoio_theysay.views import indicoio
+from indicoio_theysay.views import indicoioSent
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^postsJsonObject/', postsJsonObject),
-    url(r'^indicoio/', indicoio),
+    url(r'^indicoio/', indicoioSent),
 	url(r'^$', HomePageView.as_view(), name='home'),
 	url('Aggregated_Map', Aggregated_Map.as_view(), name='map'),
 	url('Sentiment_Data', Sentiment_Data.as_view(), name='sentiment')

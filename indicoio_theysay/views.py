@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 import indicoio
+indicoio.config.api_key = 'd58464ed4f71c725f4d0b4ed0a1ac04c'
 
 
 import json
@@ -10,29 +11,35 @@ from django.http import HttpResponse
 
 
 
-def indicoio(request):
-
-
+def indicoioSent(request):
+	
 	# for key in Post.objects.all():
 	# 	data = 
 	#allentries = serialize('json', Post.objects.all(), fields = ('statement'))
-	allentries = Post.objects.all()
+	#allentries = Post.objects.all()
+	#allentries = serialize("json", Post.objects)
 
+	#one_entry = Post.objects.get(pk=2)
+	one_entry = serialize('json', Post.objects.all(), fields = ('statement'))
 
+	#data = one_entry
+	#one_entry.statement = indicoio.sentiment(one_entry)
 
+	#one_entry.sentiment = (indicoio.sentiment_hq(one_entry.statement))
+	#one_entry.save()
 
+	#allentries = Post.objects.all()
 
+	return HttpResponse(one_entry)
 
+# #Changes the 1st statement to new text.
+# 	one_entry.statement = 'hello world'
+# 	one_entry.save()
 
-
-
-	return HttpResponse(allentries)
-
-
-
+# 	one_entry = Post.objects.all()
 
 			
-#indicoio.config.api_key = 'd58464ed4f71c725f4d0b4ed0a1ac04c'
+
 
 # # single example
 # data = (indicoio.sentiment_hq("StephenLand @Land_Stephen" + 
