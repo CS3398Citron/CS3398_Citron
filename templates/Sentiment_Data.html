@@ -25,17 +25,13 @@
       for (var key in data) {
         if (data.hasOwnProperty(key)) {
           innerData = data[key];
-          for (var i in innerData) {
-            var fields = innerData["fields"];
-            var post = {
-              sentiment:fields["sentiment"],
-              value:fields["value"],
-              statement:fields["statement"],
-              poster:fields["poster"]
-            };
-            something.push(post);
-            //something.push(fields["sentiment"]);
-          }
+          var fields = innerData["fields"];
+          var post = {
+            sentiment:fields["sentiment"],
+            value:fields["value"],
+            statement:fields["statement"]
+          };
+          something.push(post);
         }
       }
       for(var x=0; x < something.length; x++)
