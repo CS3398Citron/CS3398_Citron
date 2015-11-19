@@ -9,6 +9,8 @@ class Tag(models.Model):
     class Meta:
         ordering = ('tagword',)
 
+
+
 class Post(models.Model):
     POSITIVE = 'POS'
     NEGATIVE = 'NEG'
@@ -28,4 +30,4 @@ class Post(models.Model):
 
 
     def __unicode__(self):
-        return self.statement
+        return u'%s %s' % (self.statement, self.sentiment)

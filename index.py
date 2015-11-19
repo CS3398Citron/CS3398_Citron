@@ -1,8 +1,6 @@
 import indicoio
 import json
-from django.db import models
-import sentiments
-from sentiments.models import Post
+
 
 
 
