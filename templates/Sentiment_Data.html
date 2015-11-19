@@ -15,6 +15,7 @@
     var something = [];
     var countPos = 0;
     var countNeg = 0;
+    var countNul = 0;
     $.ajax({
       type:"GET",
       url:"/postsJsonObject/",
@@ -35,19 +36,48 @@
           countPos++;
         else if(something[x] == "NEG")
           countNeg++;
+        else
+          countNul++;
     });
   </script>
+
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript">
+  <script type="text/javascript">               <!-- scripts to form tree chart -->
+    google.load("visualization", "1", {packages:["treemap"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Category', 'Parent', 'Degree of Sentiment', 'Type'],
+        ['Posts', null, 0, 0],
+        ['Positive', 'Posts', 1, 1],
+        ['Negative', 'Posts', 1, -1],
+        ['Unknown',  'Posts', 1, 0],
+      ]);
+
+      tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
+
+      tree.draw(data, {
+        minColor: 'red',
+        midColor: 'gray',
+        maxColor: 'green',
+        headerHeight: 20,
+        headerColor: 'black',
+        fontColor: 'white',
+        fontSize: 16,
+        bold: true
+      });
+    }
+  </script>
+  <script type="text/javascript">                 <!--script to form bar graph-->
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
         ["Sentiment", "Number", { role: "style" } ],
-        ["Positive", countPos, "blue"],
-        ["Negative", countNeg, "red"]
+        ["Positive", countPos, 'green'],
+        ["Negative", countNeg, "red"],
+        ["Unknown",  countNul, "gray"]
         ]);
-
       var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,
        { calc: "stringify",
@@ -55,11 +85,15 @@
        type: "string",
        role: "annotation" },
        2]);
-
       var options = {
         title: "Sentiment Distrubition",
-        width: 600,
-        height: 400,
+        //width: 600,
+        //height: 400,
+        animation:{
+          "startup": true,
+          duration: 1000,
+          easing: 'in',
+        },
         bar: {groupWidth: "95%"},
         legend: { position: "none" },
       };
@@ -76,8 +110,8 @@
   </header>
   <div id="container">
     <main id="center" class="column">
-      <div id="barchart_values" style="width: 900px; height: 500px;"></div>
-
+      <div id="barchart_values" style="width: 100%; height: 50%;"></div>
+      <div id="chart_div" style="width: 100%; height: 50%;"></div>
     </main>
     <nav id="left" class="column">
       {% include "left_nav.html" %}
