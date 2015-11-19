@@ -45,8 +45,20 @@ function initMap() {
         }
 		setTimeout(function() {
             for(var i = 0; i < heatmap.data.length && i < posts.length; i++) {
-                addMarker(heatmap.data.getAt(InfoMarkers.length), posts[i]);
+                addMarker(heatmap.data.getAt(i), posts[i]);
             }
+            
+            if (!google.maps.Polygon.prototype.getBounds) {
+ 
+            google.maps.Polygon.prototype.getBounds=function(){
+                var bounds = new google.maps.LatLngBounds()
+                this.getPath().forEach(function(element,index){bounds.extend(element)})
+                return bounds
+            }
+             
+            }
+            
+            map.fitBounds(cityHightlight.getBounds());
         }, DELAY);
 	});
 
@@ -62,7 +74,7 @@ function initMap() {
 		var marker = new google.maps.Marker({
 			position: location,
 			map: map,
-			title: location.toString()
+			title: "Location: " + location.toString()
 		});
 		
 		//Only display the first 20 markers
