@@ -19,12 +19,13 @@ def indicoioSent(request):
 		one_entry = Post.objects.get(pk=counter)
 		newString = one_entry.statement
 
-		one_entry.sentiment = indicoio.sentiment_hq(newString)
-		#Uncomment this to add POS / NEG to sentiment field rather than percent numbers
-		# if (one_entry.sentiment > .50):
-		# 	one_entry.sentiment = "POS"
-		# else:
-		# 	one_entry.sentiment = "NEG"
+		one_entry.value = indicoio.sentiment_hq(newString)
+
+		#add POS / NEG to sentiment field rather than percent numbers
+		if (one_entry.value > .50):
+			one_entry.sentiment = "POS"
+		else:
+			one_entry.sentiment = "NEG"
 		one_entry.save()
 		counter += 1
 
