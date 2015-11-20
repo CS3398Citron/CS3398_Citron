@@ -1,10 +1,11 @@
 body {
-	color: #fff;
+	color: #000;
     min-width:1000px;
 }
 
 /* Header */
 #header {
+	color:#fff;
 }
 
 #center {
@@ -19,7 +20,7 @@ body {
     margin: 0 auto;
 	margin-bottom:4px;
 }
-
+ 
 #center #map {
 	border: 3px solid white; 
 	padding:3px;
@@ -59,16 +60,4 @@ body {
 #searchTag {
 	width: 110px;
     margin: 0 auto;
-}
-
-.btn {
-  color: #000000;
-  background: #b4c4cf;
-  padding: 5px 5px 5px 5px;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background: #b1bcc2;
-  text-decoration: none;
 }
