@@ -17,7 +17,7 @@
   </header>
   <div id="container">
 	<main id="center" class="column">
-	  <div id="barchart_values"></div>
+	  <div id="barchart_values"><br><br><i class="fa fa-spinner fa-pulse fa-3x"></i></div>
 	  <div id="chart_div"></div>
 	</main>
 	<nav id="left" class="column">
@@ -30,7 +30,7 @@
   </footer>
 </body>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script>
 	var DELAY = 1400;
     var something = [];
@@ -73,82 +73,83 @@
     google.setOnLoadCallback(drawChart);
     function drawChart() {
 	setTimeout(function() {
-      var data = google.visualization.arrayToDataTable([
-        ['Category', 'Parent', 'Degree of Sentiment', 'Type'],
-        ['Posts', null, 0, 0],
-        ['Positive', 'Posts', 0, 0],
-        ['Negative', 'Posts', 0, 0],
-        ['Unknown',  'Posts', 0, 0]
-      ]);
+		  var data = google.visualization.arrayToDataTable([
+			['Category', 'Parent', 'Degree of Sentiment', 'Type'],
+			['Posts', null, 0, 0],
+			['Positive', 'Posts', 0, 0],
+			['Negative', 'Posts', 0, 0],
+			['Unknown',  'Posts', 0, 0]
+		  ]);
 
-      var row;
-      for(var i=0; i<something.length; i++)
-      { row = something[i];
-        if(row.sentiment == "POS")
-          data.addRow([i+": "+row.statement, 'Positive', 1, row.value*1]);
-        else if(row.sentiment == "NEG")
-          data.addRow([i+": "+row.statement, 'Negative', 1, row.value*-1]);
-        else
-          data.addRow([i+": "+row.statement, 'Unknown',  1, 0]);
-      }
+		  var row;
+		  for(var i=0; i<something.length; i++)
+		  { row = something[i];
+			if(row.sentiment == "POS")
+			  data.addRow([i+": "+row.statement, 'Positive', 1, row.value*1]);
+			else if(row.sentiment == "NEG")
+			  data.addRow([i+": "+row.statement, 'Negative', 1, row.value*-1]);
+			else
+			  data.addRow([i+": "+row.statement, 'Unknown',  1, 0]);
+		  }
 
-      tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
+		  tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
 
-      function selectHandler(){
-          var selection = tree.getSelection()[0];
-          var message = data.getValue(selection.row, 0);
-          if(message != "Unknown" && message != "Positive" && message != "Negative")
-            alert(message + "\n" + data.getValue(selection.row, 1) + "\n" + data.getValue(selection.row, 3));
-      }
-      google.visualization.events.addListener(tree, 'select', selectHandler);
+		  function selectHandler(){
+			  var selection = tree.getSelection()[0];
+			  var message = data.getValue(selection.row, 0);
+			  if(message != "Unknown" && message != "Positive" && message != "Negative")
+				alert(message + "\n" + data.getValue(selection.row, 1) + "\n" + data.getValue(selection.row, 3));
+		  }
+		  google.visualization.events.addListener(tree, 'select', selectHandler);
 
-      tree.draw(data, {
-        minColor: 'red',
-        midColor: 'gray',
-        maxColor: 'green',
-        headerHeight: 20,
-        headerColor: 'black',
-        fontColor: 'white',
-        fontSize: 16,
-        bold: true,
-        showTooltips: false
-      });
+		  tree.draw(data, {
+			minColor: '#E53935',
+			midColor: '#BDBDBD',
+			maxColor: '#689F38',
+			headerHeight: 20,
+			headerColor: '#EEEEEE',
+			fontColor: 'black',
+			fontSize: 14,
+			showTooltips: false,
+			'tooltip':{
+			  trigger: 'selection'
+			}
+		  });
 	  }, DELAY);
     }
   </script>
   <script type="text/javascript">                 <!--script to form bar graph-->
-	
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
-	setTimeout(function() {
-      var data = google.visualization.arrayToDataTable([
-        ["Sentiment", "Number", { role: "style" } ],
-        ["Positive", countPos, 'green'],
-        ["Negative", countNeg, "red"],
-        ["Unknown",  countNul, "gray"]
-        ]);
-      var view = new google.visualization.DataView(data);
-      view.setColumns([0, 1,
-       { calc: "stringify",
-       sourceColumn: 1,
-       type: "string",
-       role: "annotation" },
-       2]);
-      var options = {
-        title: "Sentiment Distrubition",
-        animation:{
-          "startup": true,
-          duration: 1000,
-          easing: 'in',
-        },
-        bar: {groupWidth: "95%"},
-        legend: { position: "none" },
-      };
-      var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
-      chart.draw(view, options);
-	  }, DELAY);
-    }
+  	  setTimeout(function() {
+        var data = google.visualization.arrayToDataTable([
+          ["Sentiment", "Number", { role: "style" } ],
+          ["Positive", countPos, '#689F38'],
+          ["Negative", countNeg, "#E53935"],
+          ["Unknown",  countNul, "#BDBDBD"]
+          ]);
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+         { calc: "stringify",
+         sourceColumn: 1,
+         type: "string",
+         role: "annotation" },
+         2]);
+        var options = {
+          title: "Sentiment Distrubition",
+          animation:{
+            "startup": true,
+            duration: 1000,
+            easing: 'out',
+          },
+          bar: {groupWidth: "95%"},
+          legend: { position: "none" },
+        };
+        var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+        chart.draw(view, options);
+  	  }, DELAY);
+  }
   </script>
 <noscript> &lt;div id="no-script"&gt; &lt;div class="no-script-message"&gt; &lt;div&gt; When you have eliminated the &lt;strong&gt;JavaScript&lt;/strong&gt;, whatever remains must be an empty page. &lt;/div&gt; &lt;a class="no-script-help-link" href="//support.google.com/maps/?hl=en&amp;amp;authuser=0&amp;amp;p=no_javascript" target="_blank"&gt; Enable JavaScript to see Google Maps. &lt;/a&gt; &lt;/div&gt; &lt;/div&gt; </noscript>
 </html>

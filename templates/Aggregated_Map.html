@@ -7,7 +7,9 @@
 		
 		{% load staticfiles %}
         <link href="{% static "base.css" %}" rel="stylesheet" type="text/css" media="screen" />
+        <link href="{% static "FancyButton.css" %}" rel="stylesheet" type="text/css" media="screen" />
 		<link href="{% static "Aggregated_Map.css" %}" rel="stylesheet" type="text/css" media="screen" />
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -21,18 +23,18 @@
         <div id="container">
             <main id="center" class="column">
                 <form id="map-buttons">
-                    <input id="hideMarkers" class="btn" onclick="hideMarkers();" type=button value="Hide Markers">
-                    <input id="showMarkers" class="btn" onclick="showMarkers();" type=button value="Show All Markers">
-                    <input id="deleteMarkers" class="btn" onclick="deleteMarkers();" type=button value="Delete Markers">
-                    <input id="highlight" class="btn" onclick="highlight();" type=button value="Highlight Austin">
+					<input id="highlight" class="push_button blue" onclick="highlight();" type=button value="Highlight Austin">
+                    <input id="hideMarkers" class="push_button blue" onclick="hideMarkers();" type=button value="Hide Markers">
+                    <input id="showMarkers" class="push_button blue" onclick="showMarkers();" type=button value="Show All Markers">
+                    <input id="deleteMarkers" class="push_button red" onclick="deleteMarkers();" type=button value="Delete Markers">
                 </form>
 				<div id="map-wrapper">
-					<h1>Map Loading . . .</h1>
+					<h1><i class="fa fa-spinner fa-pulse fa-3x"></i></h1>
 					<div id="map"></div>
 				</div>
                 <div id="tags">
                     <form id="search">
-                        <input id="searchTag" class="btn" onclick="searchTag();" type=button value="Search for Tag">
+                        <input id="searchTag" class="push_button blue" onclick="searchTag();" type=button value="Search for Tag">
                         <input id="textarea" type="text" placeholder="Enter a tag" name="tag">
                     </form>
                 </div>

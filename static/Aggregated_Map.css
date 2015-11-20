@@ -1,10 +1,11 @@
 body {
-	color: black;
+	color: #000;
     min-width:1000px;
 }
 
 /* Header */
 #header {
+	color:#fff;
 }
 
 #center {
@@ -17,8 +18,9 @@ body {
 #center #map-buttons {
     width: 500px;
     margin: 0 auto;
-    
+	margin-bottom:4px;
 }
+ 
 #center #map {
 	border: 3px solid white; 
 	padding:3px;
@@ -29,7 +31,7 @@ body {
 
 #map-wrapper{
 	border: 3px solid white; 
-	background: #DAE9BC;
+	background: #48C6D4;
 	margin:auto;
 	width:80%
 }
@@ -57,18 +59,5 @@ body {
 
 #searchTag {
 	width: 110px;
-    height:30px;
     margin: 0 auto;
-}
-
-.btn {
-  color: #000000;
-  background: #b4c4cf;
-  padding: 5px 5px 5px 5px;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background: #b1bcc2;
-  text-decoration: none;
 }
