@@ -2,7 +2,7 @@ var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743}, DELAY = 150;
 
 //SAMPLE DATA MAX SIZE
 //var MAX_POINTS = 11662; 
-var MAX_POINTS = 1000;
+var MAX_POINTS = 432;
 	
 var cityHightlight;
 
@@ -256,7 +256,7 @@ function getPoints(MAX_POINTS) {
 				// Generate Heatmap from getPoints()
 			heatmap = new google.maps.visualization.HeatmapLayer({
 				data: genPoints,
-				radius:3,
+				radius:7,
 				map: map
 			});
 		

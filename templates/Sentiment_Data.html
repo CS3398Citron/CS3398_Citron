@@ -17,7 +17,7 @@
   </header>
   <div id="container">
 	<main id="center" class="column">
-	  <div id="barchart_values"><br><br>Loading...</div>
+	  <div id="barchart_values"><br><br><i class="fa fa-spinner fa-pulse fa-3x"></i></div>
 	  <div id="chart_div"></div>
 	</main>
 	<nav id="left" class="column">
@@ -73,54 +73,52 @@
     google.setOnLoadCallback(drawChart);
     function drawChart() {
 	setTimeout(function() {
-      var data = google.visualization.arrayToDataTable([
-        ['Category', 'Parent', 'Degree of Sentiment', 'Type'],
-        ['Posts', null, 0, 0],
-        ['Positive', 'Posts', 0, 0],
-        ['Negative', 'Posts', 0, 0],
-        ['Unknown',  'Posts', 0, 0]
-      ]);
+		  var data = google.visualization.arrayToDataTable([
+			['Category', 'Parent', 'Degree of Sentiment', 'Type'],
+			['Posts', null, 0, 0],
+			['Positive', 'Posts', 0, 0],
+			['Negative', 'Posts', 0, 0],
+			['Unknown',  'Posts', 0, 0]
+		  ]);
 
-      var row;
-      for(var i=0; i<something.length; i++)
-      { row = something[i];
-        if(row.sentiment == "POS")
-          data.addRow([i+": "+row.statement, 'Positive', 1, row.value*1]);
-        else if(row.sentiment == "NEG")
-          data.addRow([i+": "+row.statement, 'Negative', 1, row.value*-1]);
-        else
-          data.addRow([i+": "+row.statement, 'Unknown',  1, 0]);
-      }
+		  var row;
+		  for(var i=0; i<something.length; i++)
+		  { row = something[i];
+			if(row.sentiment == "POS")
+			  data.addRow([i+": "+row.statement, 'Positive', 1, row.value*1]);
+			else if(row.sentiment == "NEG")
+			  data.addRow([i+": "+row.statement, 'Negative', 1, row.value*-1]);
+			else
+			  data.addRow([i+": "+row.statement, 'Unknown',  1, 0]);
+		  }
 
-      tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
+		  tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
 
-      function selectHandler(){
-          var selection = tree.getSelection()[0];
-          var message = data.getValue(selection.row, 0);
-          if(message != "Unknown" && message != "Positive" && message != "Negative")
-            alert(message + "\n" + data.getValue(selection.row, 1) + "\n" + data.getValue(selection.row, 3));
-      }
-      google.visualization.events.addListener(tree, 'select', selectHandler);
+		  function selectHandler(){
+			  var selection = tree.getSelection()[0];
+			  var message = data.getValue(selection.row, 0);
+			  if(message != "Unknown" && message != "Positive" && message != "Negative")
+				alert(message + "\n" + data.getValue(selection.row, 1) + "\n" + data.getValue(selection.row, 3));
+		  }
+		  google.visualization.events.addListener(tree, 'select', selectHandler);
 
-      tree.draw(data, {
-        minColor: '#E53935',
-        midColor: '#BDBDBD',
-        maxColor: '#689F38',
-        headerHeight: 20,
-        headerColor: '#EEEEEE',
-        fontColor: 'black',
-        fontSize: 14,
-
-        showTooltips: false,
-        'tooltip':{
-          trigger: 'selection'
-        }
-      });
+		  tree.draw(data, {
+			minColor: '#E53935',
+			midColor: '#BDBDBD',
+			maxColor: '#689F38',
+			headerHeight: 20,
+			headerColor: '#EEEEEE',
+			fontColor: 'black',
+			fontSize: 14,
+			showTooltips: false,
+			'tooltip':{
+			  trigger: 'selection'
+			}
+		  });
 	  }, DELAY);
     }
   </script>
   <script type="text/javascript">                 <!--script to form bar graph-->
-	
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -143,7 +141,7 @@
           animation:{
             "startup": true,
             duration: 1000,
-            easing: 'in',
+            easing: 'out',
           },
           bar: {groupWidth: "95%"},
           legend: { position: "none" },
