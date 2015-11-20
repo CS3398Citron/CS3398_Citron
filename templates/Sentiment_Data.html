@@ -104,7 +104,7 @@
 
 		  tree.draw(data, {
 			minColor: '#E53935',
-			midColor: '#BDBDBD',
+			midColor: '#E0E0E0',
 			maxColor: '#689F38',
 			headerHeight: 20,
 			headerColor: '#EEEEEE',
@@ -127,7 +127,7 @@
           ["Sentiment", "Number", { role: "style" } ],
           ["Positive", countPos, '#689F38'],
           ["Negative", countNeg, "#E53935"],
-          ["Neutral",  countNeu, "#BDBDBD"]
+          ["Neutral",  countNeu, "#E0E0E0"]
           ]);
         var view = new google.visualization.DataView(data);
         view.setColumns([0, 1,
