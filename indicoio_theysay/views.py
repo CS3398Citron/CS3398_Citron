@@ -15,7 +15,7 @@ from django.http import HttpResponse
 def indicoioSent(request):
 	allentries = Post.objects.all()
 	counter = 1
-	while counter <= 200:
+	while counter <= 250:
 	#for one_entry in allentries:
 		one_entry = Post.objects.get(pk=counter)
 		newString = one_entry.statement
