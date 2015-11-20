@@ -1,13 +1,13 @@
 from django.db import models
 
-class Tag(models.Model):
-    tagword = models.CharField(max_length=50, null=True, blank=True)
+# class Tag(models.Model):
+#     tagword = models.CharField(max_length=50, null=True, blank=True)
 
-    def __unicode__(self):
-        return self.tagword
+#     def __unicode__(self):
+#         return self.tagword
 
-    class Meta:
-        ordering = ('tagword',)
+#     class Meta:
+#         ordering = ('tagword',)
 
 
 
@@ -22,7 +22,7 @@ class Post(models.Model):
     timestamp = models.CharField(max_length=50)
     poster = models.CharField(max_length=100)
     statement = models.TextField()
-    tags = models.ManyToManyField(Tag)
+    tags = models.CharField(max_length=50, null=True, blank=True)
     #Positive/Negative
     sentiment = models.CharField(max_length=3, choices=SENTM_CHOICES, null=True, blank=True)
     #Positive/Negative % value
@@ -30,4 +30,4 @@ class Post(models.Model):
 
 
     def __unicode__(self):
-        return u'%s %s' % (self.statement, self.sentiment)
+        return u'%s %s %s' % (self.statement, self.sentiment, self.tags)

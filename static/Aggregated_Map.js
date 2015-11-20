@@ -39,6 +39,7 @@ function initMap() {
                     statement:fields["statement"],
                     poster:fields["poster"]
                 };
+                post["tags"] = post["tags"].substring(0,post["tags"].length-2);
                 posts.push(post);
           }
           else return;
@@ -95,8 +96,8 @@ function initMap() {
 			contentString+='<div>Time of Post: '+post["timestamp"]+'</div>';
 		// if(post["recipient"].length > 0)
 			// contentString+='<div>Recipient: '+post["recipient"]+'</div>';
-		if(post["tags"].length > 0)
-			contentString+='<strong><div>Tags: '+post["tags"]+'</div></strong>';
+		if(post["tags"] != null && post["tags"].length > 0)
+			contentString+='<strong><div>Keywords: '+post["tags"]+'</div></strong>';
 		var infowindow = new google.maps.InfoWindow({
           content: contentString
         });
@@ -170,13 +171,13 @@ function initMap() {
 	 }
 	 for (var i = 0; i < InfoMarkers.length; i++) {
 		 // Get tag from InfoWindow
-        if(InfoMarkers[i].InfoWindow.content.includes("<strong><div>Tags: ")) {
-             checkTag = InfoMarkers[i].InfoWindow.content.split("<strong><div>Tags: ")[1].split("</div></strong>")[0];
+        if(InfoMarkers[i].InfoWindow.content.includes("<strong><div>Keywords: ")) {
+             checkTag = InfoMarkers[i].InfoWindow.content.split("<strong><div>Keywords: ")[1].split("</div></strong>")[0];
      
-             if(checkTag.includes(","))
+             if(checkTag.includes(", "))
              {
                  var flag = false;
-                 checkTag = checkTag.split(",");
+                 checkTag = checkTag.split(", ");
                  console.log(checkTag);
                  for(var j = 0; j < checkTag.length && flag === false; j++)
                  {
