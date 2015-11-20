@@ -36,7 +36,7 @@
     var something = [];
     var countPos = 0;
     var countNeg = 0;
-    var countNul = 0;
+    var countNeu = 0;
 	
     $.ajax({
       type:"GET",
@@ -62,7 +62,7 @@
         else if(something[x].sentiment == "NEG")
           countNeg++;
         else
-          countNul++;
+          countNeu++;
     });
   </script>
 
@@ -76,9 +76,9 @@
 		  var data = google.visualization.arrayToDataTable([
 			['Category', 'Parent', 'Degree of Sentiment', 'Type'],
 			['Posts', null, 0, 0],
-			['Positive', 'Posts', 0, 0],
-			['Negative', 'Posts', 0, 0],
-			['Unknown',  'Posts', 0, 0]
+			['Positive', 'Posts', 0, 10],
+			['Negative', 'Posts', 0, -10],
+			['Neutral',  'Posts', 0, 0]
 		  ]);
 
 		  var row;
@@ -89,7 +89,7 @@
 			else if(row.sentiment == "NEG")
 			  data.addRow([i+": "+row.statement, 'Negative', 1, row.value*-1]);
 			else
-			  data.addRow([i+": "+row.statement, 'Unknown',  1, 0]);
+			  data.addRow([i+": "+row.statement, 'Neutral',  1, row.value*1]);
 		  }
 
 		  tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
@@ -97,8 +97,8 @@
 		  function selectHandler(){
 			  var selection = tree.getSelection()[0];
 			  var message = data.getValue(selection.row, 0);
-			  if(message != "Unknown" && message != "Positive" && message != "Negative")
-				alert(message + "\n" + data.getValue(selection.row, 1) + "\n" + data.getValue(selection.row, 3));
+			  if(message != "Neutral" && message != "Positive" && message != "Negative")
+				alert("Post " + message + "\n\nSentiment: " + data.getValue(selection.row, 1) + "\nValue: " + data.getValue(selection.row, 3));
 		  }
 		  google.visualization.events.addListener(tree, 'select', selectHandler);
 
@@ -127,7 +127,7 @@
           ["Sentiment", "Number", { role: "style" } ],
           ["Positive", countPos, '#689F38'],
           ["Negative", countNeg, "#E53935"],
-          ["Unknown",  countNul, "#BDBDBD"]
+          ["Neutral",  countNeu, "#BDBDBD"]
           ]);
         var view = new google.visualization.DataView(data);
         view.setColumns([0, 1,
@@ -137,7 +137,6 @@
          role: "annotation" },
          2]);
         var options = {
-          title: "Sentiment Distrubition",
           animation:{
             "startup": true,
             duration: 1000,
