@@ -1,4 +1,4 @@
-var map, heatmap, cityCenter = {lat: 30.317, lng: -97.743}, DELAY = 150;
+var map, heatmapPos, heatmapNeg, cityCenter = {lat: 30.317, lng: -97.743}, DELAY = 150;
 
 //SAMPLE DATA MAX SIZE
 //var MAX_POINTS = 11662; 
@@ -45,10 +45,15 @@ function initMap() {
           else return;
         }
 		setTimeout(function() {
-            for(var i = 0; i < heatmap.data.length && i < posts.length; i++) {
-                addMarker(heatmap.data.getAt(i), posts[i]);
+			
+            for(var i = 0; i < heatmapPos.data.length/2 && i < posts.length; i++) {
+                addMarker(heatmapPos.data.getAt(i), posts[i]);
             }
             
+			for(var i = 0; i < heatmapNeg.data.length/2 && i < posts.length; i++) {
+                addMarker(heatmapNeg.data.getAt(i), posts[i]);
+            }
+			
             if (!google.maps.Polygon.prototype.getBounds) {
  
             google.maps.Polygon.prototype.getBounds=function(){
@@ -75,7 +80,8 @@ function initMap() {
 		var marker = new google.maps.Marker({
 			position: location,
 			map: map,
-			title: "Location: " + location.toString()
+			title: "Location: " + location.toString(),
+			icon:'/static/grey-marker.png'
 		});
 		
 		//Only display the first 20 markers
@@ -106,7 +112,7 @@ function initMap() {
 		var InfoMarker = {
 			Marker:marker,
 			InfoWindow:infowindow,
-			heatPoint:heatmap.data.getAt(InfoMarkers.length)
+			heatPoint:heatmapNeg.data.getAt(InfoMarkers.length)
 		};
 			
 		InfoMarkers.push(InfoMarker);
@@ -230,7 +236,8 @@ function getPoints(MAX_POINTS) {
         cityHightlight.strokeOpacity = 0;
 		
 		setTimeout(function() {
-			var genPoints = [];
+			var genPointsPos = [];
+			var genPointsNeg = [];
 			var bounds = new google.maps.LatLngBounds();
 			
 			// Calculate the bounds of the polygon
@@ -243,21 +250,53 @@ function getPoints(MAX_POINTS) {
 
 			var numPoints = 0;
 			//Main source of lag in map
+			while(numPoints < MAX_POINTS/2) {
+			   var ptLat = Math.random() * (ne.lat() - sw.lat()) + sw.lat();
+			   var ptLng = Math.random() * (ne.lng() - sw.lng()) + sw.lng();
+			   var point = new google.maps.LatLng(ptLat,ptLng);
+			   // Add point if it's inside the bounds of polygon
+			   if (google.maps.geometry.poly.containsLocation(point,cityHightlight)) {
+					genPointsPos.push(new google.maps.LatLng(ptLat,ptLng));
+					numPoints++;
+			   }
+			}
+			
+			// Generate Heatmap from getPoints()
+			heatmapPos = new google.maps.visualization.HeatmapLayer({
+				data: genPointsPos,
+				radius:7,
+				gradient:[
+				'rgba(255, 0, 0, 0.1)',
+				'rgba(255, 0, 0, 0.7)',
+				'rgba(255, 0, 0, 0.9)',
+				'rgba(255, 0, 0, 1)',
+				'rgba(255, 0, 0, 1)'
+				],
+				map: map
+			});
+			
 			while(numPoints < MAX_POINTS) {
 			   var ptLat = Math.random() * (ne.lat() - sw.lat()) + sw.lat();
 			   var ptLng = Math.random() * (ne.lng() - sw.lng()) + sw.lng();
 			   var point = new google.maps.LatLng(ptLat,ptLng);
 			   // Add point if it's inside the bounds of polygon
 			   if (google.maps.geometry.poly.containsLocation(point,cityHightlight)) {
-					genPoints.push(new google.maps.LatLng(ptLat,ptLng));
+					genPointsNeg.push(new google.maps.LatLng(ptLat,ptLng));
 					numPoints++;
 			   }
 			}
 			
-				// Generate Heatmap from getPoints()
-			heatmap = new google.maps.visualization.HeatmapLayer({
-				data: genPoints,
+			// Generate Heatmap from getPoints()
+			heatmapNeg = new google.maps.visualization.HeatmapLayer({
+				data: genPointsNeg,
 				radius:7,
+				gradient:[
+				'rgba(0, 255, 0, 0.1)',
+				'rgba(0, 255, 0, 0.7)',
+				'rgba(0, 255, 0, 0.9)',
+				'rgba(0, 255, 0, 1)',
+				'rgba(0, 255, 0, 1)'
+				],
 				map: map
 			});
 		
@@ -266,26 +305,6 @@ function getPoints(MAX_POINTS) {
 		// Wait DELAY milliseconds for polygon to finish generating
 		}, DELAY);
 	});
-}
-
-function changeGradient() {
- var gradient = [
-	'rgba(0, 255, 255, 0)',
-	'rgba(0, 255, 255, 1)',
-	'rgba(0, 191, 255, 1)',
-	'rgba(0, 127, 255, 1)',
-	'rgba(0, 63, 255, 1)',
-	'rgba(0, 0, 255, 1)',
-	'rgba(0, 0, 223, 1)',
-	'rgba(0, 0, 191, 1)',
-	'rgba(0, 0, 159, 1)',
-	'rgba(0, 0, 127, 1)',
-	'rgba(63, 0, 91, 1)',
-	'rgba(127, 0, 63, 1)',
-	'rgba(191, 0, 31, 1)',
-	'rgba(255, 0, 0, 1)'
- ]
- heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
 google.maps.event.addDomListener(window, 'load', initMap);
