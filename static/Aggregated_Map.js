@@ -43,6 +43,7 @@ function initMap() {
                 posts.push(post);
           }
           else return;
+          document.getElementById('numPosts').innerHTML = "Number of posts: "+posts.length;
         }
 		setTimeout(function() {
 			
@@ -203,7 +204,7 @@ function initMap() {
 	 for (var i = 0; i < tagged.length; i++) {
 		 setMapOnAll(map, tagged);
 	 }
-
+        document.getElementById('numPosts').innerHTML = "Number of matching posts: "+tagged.length;
 	}
 }
 

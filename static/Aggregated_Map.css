@@ -49,6 +49,7 @@ body {
 #tags {
     margin-left:10%;
 	font-size: 15px;
+    padding-bottom:10px;
 }
 
 #search input[type="text"]{
@@ -60,4 +61,8 @@ body {
 #searchTag {
 	width: 110px;
     margin: 0 auto;
+}
+
+#numPosts {
+    width: 338px;
 }
