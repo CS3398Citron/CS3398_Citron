@@ -2,7 +2,7 @@ var map, heatmapPos, heatmapNeg, cityCenter = {lat: 30.317, lng: -97.743}, DELAY
 
 //SAMPLE DATA MAX SIZE
 //var MAX_POINTS = 11662; 
-var MAX_POINTS = 432;
+var MAX_POINTS = 424;
 	
 var cityHightlight;
 
@@ -46,12 +46,12 @@ function initMap() {
           document.getElementById('numPosts').innerHTML = "Number of posts: "+posts.length;
         }
 		setTimeout(function() {
-			
-            for(var i = 0; i < heatmapPos.data.length/2 && i < posts.length; i++) {
+			var i = 0;
+            for(; i < heatmapPos.data.length && i < posts.length; i++) {
                 addMarker(heatmapPos.data.getAt(i), posts[i]);
             }
-            
-			for(var i = 0; i < heatmapNeg.data.length/2 && i < posts.length; i++) {
+            var posPosts = i;
+			for(i = 0; i < heatmapNeg.data.length && i < posts.length - posPosts; i++) {
                 addMarker(heatmapNeg.data.getAt(i), posts[i]);
             }
 			
