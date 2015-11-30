@@ -1,0 +1,17 @@
+Sprint 1 Artifacts
+
+HTML video
+https://www.youtube.com/watch?v=bWPMSSsVdPk
+12 minute video
+
+Codecademy html and css tutorial
+https://www.codecademy.com/learn/web
+Hours were spent between doing this and at the same time making a homepage
+for the group (going back and forth from each from learning to applying what I
+learned)
+
+The rest of the hours were spent on the website, creating the style and format.
+I did not commit it myself because I had been collaborating with Blake on the 
+Website because the style affected his heat map, and so I sent it to him and 
+he committed it because I didn't understand git that well back then, and didn't 
+want to mess up his files.

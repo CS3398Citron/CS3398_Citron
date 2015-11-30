@@ -1,0 +1,27 @@
+Sprint 2 Artifacts
+
+https://wiki.python.org/moin/WhileLoop
+Lots of time spent on the python.org site learning how to solve problems I
+thought would be useful, but never ended up doing in this sprint. Research based.
+
+Python switch statements tutorial
+https://www.youtube.com/watch?v=XNgf1DlQnmI
+3 minute video, plus about an hour of tinkering in python to get a better 
+understanding.
+
+Python switch case statement using dictionary...
+https://www.youtube.com/watch?v=jNSMtckxSXY
+8 minute video, ended up being useless because it was way over my head. Horrible
+video... oh well.
+
+try Django tutorial
+https://www.youtube.com/watch?v=KsLHt3D_jsE
+watched the first 4 of 42 of these.. they were about 20 minutes total I think. 
+Not very helpful so I stopped watching.
+I also had a lot of trouble getting django to work on my computer but I met with
+Blake outside of class and he showed me how it worked and helped me get a 
+better understanding of it.
+
+
+Pretty much all of my second sprint was spent on research and that is why I do 
+not have any git commits.
